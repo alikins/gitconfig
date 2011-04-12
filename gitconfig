@@ -1,0 +1,82 @@
+[user]
+   email = alikins@redhat.com 
+   name = Adrian Likins
+
+
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
+	ui = auto
+
+[merge]
+	#tool = meld
+	tool = kdiff3
+	#tool = diffuse
+
+[alias]
+    # various pretty loggers from various places
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+    lc = log ORIG_HEAD.. --stat --no-merges
+    # from http://blog.kfish.org/2010/04/git-lola.html
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+
+
+    # from https://git.wiki.kernel.org/index.php/Aliases
+    whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+    whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+
+    # ignore po files in "git log", sorry translators ;-<
+    slog = "!sh -c 'git log --no-merges $1 `ls | grep -v ^po`' -" 
+
+    # typo
+    rbanch = branch
+    
+    # commits not pushed to $1
+    unpushed = cherry -v 
+
+    # what tag contains the sha
+    whatrelease = name-rev --name-only
+
+    # what branch contains the sha
+    contains = branch --contains 
+
+    # log everything with $1 string in the diff
+    timegrep = log -S 
+
+    # like above, but show the diff
+    diffgrep = log -p -S
+ 
+    # search logs for a bugzilla like number
+    findbug = "!sh -c 'git log --grep ^$1:' -"
+
+    # show what tag/release a bug was part of
+    bugrelease = "!sh -c 'git name-rev --tags --name-only  $(git log --grep ^$1: --pretty=\"format:%H\n\")' -"
+
+    # from https://gist.github.com/492227
+    lost = !"git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset %f' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
+
+    # show a log without the formating, occasionaly handy for c&p
+    rawlog = log --format=\"format:commit %H%nAuthor:%an%n%n%B%n\"
+
+    # show a list of branches sorted by time of last commit 
+    brage =  "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\") ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" ; done'"
+
+   # show a list of tags sorted by when they were tagged
+   tagage = "!sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'" 
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow 
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
