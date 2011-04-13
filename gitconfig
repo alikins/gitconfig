@@ -16,6 +16,11 @@
 	#tool = diffuse
 
 [alias]
+	
+    # because I always typo git commit --ammend, er, amend
+    amend = commit --amend
+    ammend = amend
+
     # various pretty loggers from various places
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
     lc = log ORIG_HEAD.. --stat --no-merges
