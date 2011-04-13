@@ -16,6 +16,9 @@
 	#tool = diffuse
 
 [alias]
+
+    # not a fan of random merges
+    pull = pull --ff-only
 	
     # because I always typo git commit --ammend, er, amend
     amend = commit --amend
