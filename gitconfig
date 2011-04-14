@@ -53,6 +53,10 @@
     # what branch contains the sha
     contains = branch --contains 
 
+    # what got pushed to master in the last hour
+    #  based on http://stackoverflow.com/questions/3357219/expose-the-date-a-commit-was-pushed-to-a-repository
+    justpushed = log origin/master@{\"1 hour ago\"}..origin/master --
+
     # log everything with $1 string in the diff
     timegrep = log -S 
 
