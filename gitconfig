@@ -24,6 +24,8 @@
     amend = commit --amend
     ammend = amend
 
+    send-note = send-email --annotate
+
     # various pretty loggers from various places
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
     lc = log ORIG_HEAD.. --stat --no-merges
@@ -70,7 +72,7 @@
     rawlog = log --format=\"format:commit %H%nAuthor:%an%n%n%B%n\"
 
     # show a list of branches sorted by time of last commit 
-    brage =  "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\") ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" ; done'"
+    brage =  "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\") ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done'"
 
    # show a list of tags sorted by when they were tagged
    tagage = "!sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'" 
