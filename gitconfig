@@ -17,6 +17,9 @@
 
 [alias]
 
+    # shotcuts
+    m = checkout master
+
     # not a fan of random merges
     pull = pull --ff-only
 	
