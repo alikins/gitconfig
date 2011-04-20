@@ -81,8 +81,11 @@
     # show a list of branches sorted by time of last commit 
     brage =  "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\") ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done'"
 
-   # show a list of tags sorted by when they were tagged
-   tagage = "!sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'" 
+    # show a list of tags sorted by when they were tagged
+    tagage = "!sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'" 
+
+    # not useful itself, but handy to remember for use in scripts
+    thisbranch = rev-parse --abbrev-ref HEAD
 
 [color "branch"]
   current = yellow reverse
