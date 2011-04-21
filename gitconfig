@@ -15,6 +15,7 @@
 	tool = kdiff3
 	#tool = diffuse
 
+
 [alias]
 
     # shotcuts
@@ -86,6 +87,9 @@
 
     # not useful itself, but handy to remember for use in scripts
     thisbranch = rev-parse --abbrev-ref HEAD
+
+    # remove a file from index
+    unadd = git reset HEAD 
 
 [color "branch"]
   current = yellow reverse
