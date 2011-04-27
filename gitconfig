@@ -85,6 +85,9 @@
     # show a list of tags sorted by when they were tagged
     tagage = "!sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'" 
 
+    # show a list of every branch and show there latests commit, sorted by last commit
+    brlog = "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\") ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git show  -s $C ; echo; done'"
+
     # not useful itself, but handy to remember for use in scripts
     thisbranch = rev-parse --abbrev-ref HEAD
 
