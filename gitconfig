@@ -94,6 +94,9 @@
     # remove a file from index
     unadd = git reset HEAD 
 
+    # url of origin, about 99% of what I use git config --list for
+    cloneurl = config --get remote.origin.url
+
 [color "branch"]
   current = yellow reverse
   local = yellow 
