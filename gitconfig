@@ -97,6 +97,10 @@
     # url of origin, about 99% of what I use git config --list for
     cloneurl = config --get remote.origin.url
 
+     # show all the bugs in the current branch via bugzilla, only useful for our format of
+     # commit messages and bug tracking. Also currently doesn't support any log ranges
+     # also, would be much saner in a script...
+    showbugs = "!f() { for bug in $(git log --format=\"format:%s\" --grep \"^[[:digit:]]\\+:\" | awk -F\":\" '{print $1 }') ; do echo -n $bug, ; done }; g() { xdg-open \"https://bugzilla.redhat.com/buglist.cgi?bug_id=$1\" ; }; g $(f) > /dev/null 2>&1"
 [color "branch"]
   current = yellow reverse
   local = yellow 
