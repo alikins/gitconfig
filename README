@@ -2,3 +2,10 @@ my .gitconfig, see gitconfig for inline comments.
 
 Some are stuff I use a lot. A lot are things I
 use occasionally, so this just documents them. 
+
+isntall git-checkcommits to somewhere in
+the PATH. usage is "git checkcommits master feature"
+which will show commits in feature that don't seem
+to be in master. It's based on comparing the subject
+line, and try's to ignore subjects that start
+with "12345:" (how we indicate bug id's). 
