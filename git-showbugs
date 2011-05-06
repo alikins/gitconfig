@@ -1,0 +1,25 @@
+#!/bin/bash
+
+
+status=$1
+echo "$status"
+
+shift
+
+opts=$*
+
+
+buglist() { 
+for bug in $(git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $opts | awk -F":" '{print $1 }') 
+do
+	 echo -n $bug, 
+done
+};
+
+open_browser()
+{ 
+	bugzilla query -b "$1" --bug_status $2
+#	xdg-open "https://bugzilla.redhat.com/buglist.cgi?bug_id=$1;$2" ;
+};
+
+open_browser $(buglist) "$status" 
