@@ -1,25 +1,42 @@
 #!/bin/bash
 
 
-status=$1
-echo "$status"
 
-shift
+usage() {
+	print "show-bugs [-s|--status] bug_status [-w|--web] log_options"
+}
 
-opts=$*
+while [ "$1" != "" ]; do
+    case $1 in
+        -s | --status )         shift
+                                status=$1
+                                ;;
+        -w | --web )            web=1
+                                ;;
+        -h | --help )           usage
+                                exit
+                                ;;
+    esac
+    shift
+done
 
+log_opts=$*
 
 buglist() { 
-for bug in $(git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $opts | awk -F":" '{print $1 }') 
+for bug in $(git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }') 
 do
 	 echo -n $bug, 
 done
 };
 
 open_browser()
-{ 
-	bugzilla query -b "$1" --bug_status $2
-#	xdg-open "https://bugzilla.redhat.com/buglist.cgi?bug_id=$1;$2" ;
+{
+	xdg-open "https://bugzilla.redhat.com/buglist.cgi?bug_id=$1;bug_status=$2" ;
 };
 
-open_browser $(buglist) "$status" 
+
+if [ "$web" == "1" ] ; then
+	open_browser $(buglist) "$status" > /dev/null 2>&1
+else
+	bugzilla query -b $(buglist) --bug_status $status 
+fi

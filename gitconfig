@@ -98,8 +98,8 @@
     cloneurl = config --get remote.origin.url
 
     # needs python-bugzilla, and git-showbugs
-    openbugs = showbugs NEW,ASSIGNED,NEEDINFO,FAILS_QA,REOPENED, ON_DEV 
-    closedbugs = showbugs PASSES_QA,VERIFIED,RELEASE_PENDING,CLOSED
+    openbugs = showbugs -s NEW,ASSIGNED,NEEDINFO,FAILS_QA,REOPENED,ON_DEV 
+    closedbugs = showbugs -s PASSES_QA,VERIFIED,RELEASE_PENDING,CLOSED
  
 [color "branch"]
   current = yellow reverse
