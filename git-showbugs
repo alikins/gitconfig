@@ -18,11 +18,14 @@ while [ "$1" != "" ]; do
         -h | --help )           usage
                                 exit
                                 ;;
+	* )			log_opts="${log_opts} ${1}"
+				shift;
+				;;
     esac
-    log_opts="${log_opts} ${1}"
     shift
 done
 
+# echo  "git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }'"
 buglist() { 
 for bug in $(git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }') 
 do
@@ -36,8 +39,14 @@ open_browser()
 };
 
 
+bugs=$(buglist)
+
+if [ -z "$bugs" ] ; then
+	exit
+fi
+
 if [ "$web" == "1" ] ; then
-	open_browser $(buglist) "$status" > /dev/null 2>&1
+	open_browser "$bugs" "$status" > /dev/null 2>&1
 else
 	bugzilla query --bug_status "$status" -b $(buglist) 
 fi

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+declare -a releases
+
+branch=
+releases=( $(git log $1 --grep "Automatic" --format="format:%H") )
+
+
+#echo ${releases[@]}
+
+count=${#releases[@]}
+for (( i = 0 ; i < count; i=i+2 ))
+do
+	#echo ${releases[$i]}...${releases[$i+1]}
+	if [ -n "${releases[$i]}" ] &&  [ -n "${releases[$i+1]}" ] ; then		
+		git describe --exact-match "${releases[$i]}"
+		# if we want to show the previous release
+	        #git describe --exact-match "${releases[$i+1]}" 
+		#echo $(git describe --exact-match "${releases[$i+1]}")  $(git describe --exact-match "${releases[$i]}")
+
+		bugs=$(git showbugs  ${releases[$i]}...${releases[$i+1]})
+		if [ -n "$bugs" ] ; then
+			echo  "$bugs"
+			echo
+		fi
+	fi
+done
