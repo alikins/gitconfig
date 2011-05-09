@@ -100,6 +100,10 @@
     # needs python-bugzilla, and git-showbugs
     openbugs = showbugs -s NEW,ASSIGNED,NEEDINFO,FAILS_QA,REOPENED,ON_DEV 
     closedbugs = showbugs -s PASSES_QA,VERIFIED,RELEASE_PENDING,CLOSED
+
+    # idea, 
+    # bugbytag - show a list of bugs fixed per release/tag, probably
+    #            need to use our tito commits and not tags
  
 [color "branch"]
   current = yellow reverse

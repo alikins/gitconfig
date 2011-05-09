@@ -6,6 +6,7 @@ usage() {
 	print "show-bugs [-s|--status] bug_status [-w|--web] log_options"
 }
 
+status=
 while [ "$1" != "" ]; do
     case $1 in
         -s | --status )         shift
@@ -38,5 +39,5 @@ open_browser()
 if [ "$web" == "1" ] ; then
 	open_browser $(buglist) "$status" > /dev/null 2>&1
 else
-	bugzilla query -b $(buglist) --bug_status $status 
+	bugzilla query --bug_status "$status" -b $(buglist) 
 fi
