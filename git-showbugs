@@ -7,6 +7,7 @@ usage() {
 }
 
 status=
+log_opts=
 while [ "$1" != "" ]; do
     case $1 in
         -s | --status )         shift
@@ -18,10 +19,9 @@ while [ "$1" != "" ]; do
                                 exit
                                 ;;
     esac
+    log_opts="${log_opts} ${1}"
     shift
 done
-
-log_opts=$*
 
 buglist() { 
 for bug in $(git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }') 
