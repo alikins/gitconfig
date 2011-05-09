@@ -101,9 +101,9 @@
     openbugs = showbugs -s NEW,ASSIGNED,NEEDINFO,FAILS_QA,REOPENED,ON_DEV 
     closedbugs = showbugs -s PASSES_QA,VERIFIED,RELEASE_PENDING,CLOSED
 
-    # idea, 
-    # bugbytag - show a list of bugs fixed per release/tag, probably
-    #            need to use our tito commits and not tags
+    # show a list of files with bug fixes in them, sorted by popularity of occurance
+    #  aka, list the buggy files
+    buggyfiles = !"git log --format=\"format:%n\" --grep \"^[[:digit:]]\\+:\" --name-only | grep .  | sort | uniq -c | sort -n"
  
 [color "branch"]
   current = yellow reverse
