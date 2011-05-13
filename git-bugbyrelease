@@ -20,7 +20,7 @@ buglist () {
 head=$(git log -n1 --format="format:%H")
 echo "HEAD"
 if [ "$head" != "${releases[0]}" ] ; then
-	buglist $head ${releases[0]}
+	buglist $head...${releases[0]}
 fi
 
 count=${#releases[@]}

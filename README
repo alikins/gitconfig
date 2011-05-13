@@ -12,4 +12,9 @@ with "12345:" (how we indicate bug id's).
 
 
 git-showbugs also needs to go in PATH, and requires
-python-bugzilla setup 
+python-bugzilla setup. It looks for the same bug
+id as above.
+
+git-bugbyrelease shows bugs fixed in each release.
+This is kind of specific to http://http://rm-rf.ca/tito
+based builds/  
