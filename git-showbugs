@@ -18,6 +18,8 @@ while [ "$1" != "" ]; do
         -h | --help )           usage
                                 exit
                                 ;;
+	-e | --errata )		errata=1
+				;;
 	* )			log_opts="${log_opts} ${1}"
 				shift;
 				;;
@@ -33,6 +35,11 @@ do
 done
 };
 
+
+buglist_raw() {
+	(IFS=,;set -- $(echo "$1") ;echo $*)
+}	
+
 open_browser()
 {
 	xdg-open "https://bugzilla.redhat.com/buglist.cgi?bug_id=$1;bug_status=$2" ;
@@ -47,6 +54,8 @@ fi
 
 if [ "$web" == "1" ] ; then
 	open_browser "$bugs" "$status" > /dev/null 2>&1
+elif [ "$errata" == "1" ] ; then
+	echo $(buglist_raw "$bugs")	
 else
 	bugzilla query --bug_status "$status" -b $(buglist) 
 fi
