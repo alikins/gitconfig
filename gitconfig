@@ -113,7 +113,7 @@
     # from https://github.com/cypher/dotfiles/blob/master/gitconfig
     ls-ignored = ls-files --exclude-standard --ignored --others
 
-    # based on "buggfiles" above and https://github.com/cypher/dotfiles/blob/master/bin/git-churn
+    # based on "buggyfiles" above and https://github.com/cypher/dotfiles/blob/master/bin/git-churn
     churn = !"git log -M -C --name-only --format=\"format:%n\" | grep . | sort | uniq -c | sort -n" 
 
     # uh, don't do this. list authors by numbers of commits. probably needs a .mailmap
@@ -123,6 +123,7 @@
     # I suppose the really mad could make "breakers" that figures out who commits code 
     # that breaks. I can save you the time, it was me. I broke it.
     fixers = !"git log -M -C --format=\"format:%aN\" --grep \"^[[:digit:]]\\+:\" | sort | uniq -c | sort -n" 
+
 [color "branch"]
   current = yellow reverse
   local = yellow 
