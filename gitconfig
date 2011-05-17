@@ -118,7 +118,11 @@
 
     # uh, don't do this. list authors by numbers of commits. probably needs a .mailmap
     churners = !"git log -M -C  --no-color --format=\"%aN\" | sort | uniq -c | sort -n"
- 
+
+    # yeah, don't do this either. list authors by # of bug id's fixed
+    # I suppose the really mad could make "breakers" that figures out who commits code 
+    # that breaks. I can save you the time, it was me. I broke it.
+    fixers = !"git log -M -C --format=\"format:%aN\" --grep \"^[[:digit:]]\\+:\" | sort | uniq -c | sort -n" 
 [color "branch"]
   current = yellow reverse
   local = yellow 
