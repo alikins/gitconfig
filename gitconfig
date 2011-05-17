@@ -80,7 +80,12 @@
     rawlog = log --format=\"format:commit %H%nAuthor:%an%n%n%B%n\"
 
     # show a list of branches sorted by time of last commit 
-    brage =  "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\") ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done'"
+    #brage =  "!sh -x -c 'for C in $(git for-each-ref --sort=committerdate refs/heads  --format=\"%(refname:short)\") ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done' -"
+
+    brage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done; }; g "
+
+    # show remote branches as well
+    brageall = !git brage refs/remotes
 
     # show a list of tags sorted by when they were tagged
     tagage = "!sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'" 
