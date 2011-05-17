@@ -108,7 +108,16 @@
 
     # show a list of files with bug fixes in them, sorted by popularity of occurance
     #  aka, list the buggy files
-    buggyfiles = !"git log --format=\"format:%n\" --grep \"^[[:digit:]]\\+:\" --name-only | grep .  | sort | uniq -c | sort -n"
+    buggyfiles = !"git log -M -C --format=\"format:%n\" --grep \"^[[:digit:]]\\+:\" --name-only | grep .  | sort | uniq -c | sort -n"
+
+    # from https://github.com/cypher/dotfiles/blob/master/gitconfig
+    ls-ignored = ls-files --exclude-standard --ignored --others
+
+    # based on "buggfiles" above and https://github.com/cypher/dotfiles/blob/master/bin/git-churn
+    churn = !"git log -M -C --name-only --format=\"format:%n\" | grep . | sort | uniq -c | sort -n" 
+
+    # uh, don't do this. list authors by numbers of commits. probably needs a .mailmap
+    churners = !"git log -M -C  --no-color --format=\"%aN\" | sort | uniq -c | sort -n"
  
 [color "branch"]
   current = yellow reverse
