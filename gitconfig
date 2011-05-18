@@ -80,8 +80,6 @@
     rawlog = log --format=\"format:commit %H%nAuthor:%an%n%n%B%n\"
 
     # show a list of branches sorted by time of last commit 
-    #brage =  "!sh -x -c 'for C in $(git for-each-ref --sort=committerdate refs/heads  --format=\"%(refname:short)\") ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done' -"
-
     brage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done; }; g "
 
     # show remote branches as well
@@ -108,6 +106,7 @@
 
     # show a list of files with bug fixes in them, sorted by popularity of occurance
     #  aka, list the buggy files
+    # FIXME: should probably make all the bug regex stuff scripts so it's easier to customize
     buggyfiles = !"git log -M -C --format=\"format:%n\" --grep \"^[[:digit:]]\\+:\" --name-only | grep .  | sort | uniq -c | sort -n"
 
     # from https://github.com/cypher/dotfiles/blob/master/gitconfig
@@ -119,20 +118,30 @@
     # uh, don't do this. list authors by numbers of commits. probably needs a .mailmap
     churners = !"git log -M -C  --no-color --format=\"%aN\" | sort | uniq -c | sort -n"
 
+    # burners: who last touched the most code according to annotate  see git-burners
+    # alias implementation just for reference
+    #burners = "!f() { for i in $(git ls-files) ; do git annotate -e $i ; done }; g() { f | awk '{print $2 }' | perl -pe 's/\\(\\<(.+@.+)\\>/\\1/' ; }; g"
+	
     # yeah, don't do this either. list authors by # of bug id's fixed
     # I suppose the really mad could make "breakers" that figures out who commits code 
     # that breaks. I can save you the time, it was me. I broke it.
     fixers = !"git log -M -C --format=\"format:%aN\" --grep \"^[[:digit:]]\\+:\" | sort | uniq -c | sort -n" 
 
+    # who reverts the most. Totally useless, but I like the name
+    poppers = !"git log -M -C --format=\"format:%aN\" --grep \"Revert\" | sort | uniq -c | sort -n"
+
+
 [color "branch"]
   current = yellow reverse
   local = yellow 
   remote = green
+
 [color "diff"]
   meta = yellow bold
   frag = magenta bold
   old = red bold
   new = green bold
+
 [color "status"]
   added = yellow
   changed = green

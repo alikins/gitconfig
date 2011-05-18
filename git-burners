@@ -1,0 +1,24 @@
+#!/bin/bash
+
+
+status=
+exclude=
+while [ "$1" != "" ]; do
+    case $1 in
+        -x | --exclude )        shift
+                                exclude=$1
+                                ;;
+    esac
+    shift
+done
+
+grep_opts="."
+
+if [ -n "$exclude" ] ; then
+	grep_opts="-v $exclude"
+fi
+for i in $(git ls-files | grep $grep_opts) ;
+do
+	 git blame -f -e $i;
+done | awk '{print $3 }' | sort | perl -pe "s/\(\<(.+\@.+)\>/\1/; " | uniq -c | sort -n
+
