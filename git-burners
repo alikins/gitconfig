@@ -17,8 +17,10 @@ grep_opts="."
 if [ -n "$exclude" ] ; then
 	grep_opts="-v $exclude"
 fi
-for i in $(git ls-files | grep $grep_opts) ;
+
+git ls-files | grep $grep_opts | while read line;
 do
-	 git blame -f -e $i;
-done | awk '{print $3 }' | sort | perl -pe "s/\(\<(.+\@.+)\>/\1/; " | uniq -c | sort -n
+	git blame -f -e "$line";
+done | awk '{print $3 }' | sort |perl -pe "s/\(\<(.+\@.+)\>+/\1/; " | uniq -c | sort -n
+
 
