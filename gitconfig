@@ -130,6 +130,8 @@
     # who reverts the most. Totally useless, but I like the name
     poppers = !"git log -M -C --format=\"format:%aN\" --grep \"Revert\" | sort | uniq -c | sort -n"
 
+    # shorter alias
+    lsg = ls-github
 
 [color "branch"]
   current = yellow reverse
