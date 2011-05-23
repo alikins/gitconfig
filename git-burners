@@ -18,9 +18,28 @@ if [ -n "$exclude" ] ; then
 	grep_opts="-v $exclude"
 fi
 
-git ls-files | grep $grep_opts | while read line;
-do
-	git blame -f -e "$line";
-done | awk '{print $3 }' | sort |perl -pe "s/\(\<(.+\@.+)\>+/\1/; " | uniq -c | sort -n
 
+#files=( $(git ls-files | grep $grep_opts) )
+#count=${#files[@]}
+#for (( i = 0 ; i < count; i++ ))
+#do
+#	echo ${files[$i]}
+#done
+
+#exit
+
+
+git ls-files -z | xargs -0 -n 1 | while read line;
+do
+	git annotate -b -e -- "${line}";
+#done
+done | perl -pe "s/.+\s\(\<(.+\@.+)\>.*/\1/g;"  | sort | uniq -c | sort -n
+
+
+#IFS=''
+#git ls-files | grep $grep_opts | while read line;
+#do
+#		git blame -f -e -- "\"${line}\"";
+#done | awk '{print $3 }' | sort |perl -pe "s/\(\<(.+\@.+)\>+/\1/; " | uniq -c | sort -n
+#unset IFS
 
