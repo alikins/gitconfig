@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# show a list of files, latest commit checksum, and subject of latest commit
+# kind of like the github file view
+
+ls | while read line ;
+do
+	IFS='
+'
+	log_msg=( $(git log -n 1 master --format="%Cred$line%Creset%n%Cgreen%cr%Creset%n%Creset%s%Creset%n%Cblue[%aN]%Creset%n" -- "$line") );
+	unset IFS
+	printf "%-30.30s %-20s %s %s\n" "${log_msg[0]}" "${log_msg[1]}" "${log_msg[2]}" "${log_msg[3]}" 
+done
