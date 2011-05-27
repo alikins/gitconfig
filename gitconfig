@@ -116,7 +116,10 @@
     churn = !"git log -M -C --name-only --format=\"format:%n\" | grep . | sort | uniq -c | sort -n" 
 
     # uh, don't do this. list authors by numbers of commits. probably needs a .mailmap
-    churners = !"git log -M -C  --no-color --format=\"%aN\" | sort | uniq -c | sort -n"
+    churners = shortlog -sn -- 
+    # this does the same thing, except slower... 
+    #churners = !"git log -M -C  --no-color --format=\"%aN\" | sort | uniq -c | sort -n"
+
 
     # burners: who last touched the most code according to annotate  see git-burners
     # alias implementation just for reference
@@ -132,6 +135,7 @@
 
     # shorter alias
     lsg = ls-github
+
 
 [color "branch"]
   current = yellow reverse
