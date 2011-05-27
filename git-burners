@@ -29,11 +29,13 @@ fi
 #exit
 
 
-git ls-files -z | xargs -0 -n 1 | while read line;
+#git ls-files -z | grep $grep_opts | xargs -0 -n 1 | while read line;
+git ls-files | grep $grep_opts | while read line;
 do
-	git annotate -b -e -- "${line}";
-#done
-done | perl -pe "s/.+\s\(\<(.+\@.+)\>.*/\1/g;"  | sort | uniq -c | sort -n
+#	git annotate -b -- "${line}";
+	git blame -C -w -- "${line}";
+# regex from http://gitorious.org/joenio/misc/blobs/master/git-blame-stats
+done | perl -pe "s[^.*?\((.*?)\s*\d{4}-\d{2}-\d{2}.*][\1]" | sort | uniq -c | sort -n 
 
 
 #IFS=''
