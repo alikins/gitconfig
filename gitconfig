@@ -1,5 +1,5 @@
 [user]
-   email = alikins@redhat.com 
+   email = alikins@redhat.com
    name = Adrian Likins
 
 
@@ -12,7 +12,7 @@
 
 [merge]
 	#tool = meld
-	tool = kdiff3
+	tool = vimdiff3
 	#tool = diffuse
 
 
@@ -23,7 +23,7 @@
 
     # not a fan of random merges
     pull = pull --ff-only
-	
+
     # because I always typo git commit --ammend, er, amend
     amend = commit --amend
     ammend = amend
@@ -43,30 +43,30 @@
     whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
 
     # ignore po files in "git log", sorry translators ;-<
-    slog = "!sh -c 'git log --no-merges $1 `ls | grep -v ^po`' -" 
+    slog = "!sh -c 'git log --no-merges $1 `ls | grep -v ^po`' -"
 
     # typo
     rbanch = branch
-    
+
     # commits not pushed to $1
-    unpushed = cherry -v 
+    unpushed = cherry -v
 
     # what tag contains the sha
     whatrelease = name-rev --name-only
 
     # what branch contains the sha
-    contains = branch --contains 
+    contains = branch --contains
 
     # what got pushed to master in the last hour
     #  based on http://stackoverflow.com/questions/3357219/expose-the-date-a-commit-was-pushed-to-a-repository
     justpushed = log origin/master@{\"1 hour ago\"}..origin/master --
 
     # log everything with $1 string in the diff
-    timegrep = log -S 
+    timegrep = log -S
 
     # like above, but show the diff
     diffgrep = log -p -S
- 
+
     # search logs for a bugzilla like number
     findbug = "!sh -c 'git log --grep ^$1:' -"
 
@@ -79,7 +79,7 @@
     # show a log without the formating, occasionaly handy for c&p
     rawlog = log --format=\"format:commit %H%nAuthor:%an%n%n%B%n\"
 
-    # show a list of branches sorted by time of last commit 
+    # show a list of branches sorted by time of last commit
     brage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done; }; g "
 
     # show remote branches as well
@@ -95,7 +95,7 @@
     thisbranch = rev-parse --abbrev-ref HEAD
 
     # remove a file from index
-    unadd = git reset HEAD 
+    unadd = git reset HEAD
 
     # url of origin, about 99% of what I use git config --list for
     cloneurl = config --get remote.origin.url
@@ -152,3 +152,5 @@
   added = yellow
   changed = green
   untracked = cyan
+[mergetool "vimdiff3"]
+	cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
