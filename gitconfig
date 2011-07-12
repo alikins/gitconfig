@@ -124,7 +124,7 @@
     # burners: who last touched the most code according to annotate  see git-burners
     # alias implementation just for reference
     #burners = "!f() { for i in $(git ls-files) ; do git annotate -e $i ; done }; g() { f | awk '{print $2 }' | perl -pe 's/\\(\\<(.+@.+)\\>/\\1/' ; }; g"
-	
+    #
     # yeah, don't do this either. list authors by # of bug id's fixed
     # I suppose the really mad could make "breakers" that figures out who commits code 
     # that breaks. I can save you the time, it was me. I broke it.
@@ -136,6 +136,8 @@
     # shorter alias
     lsg = ls-github
 
+    # ignore local changes to a  file
+    ignore = git update-index --assume-unchanged
 
 [color "branch"]
   current = yellow reverse
