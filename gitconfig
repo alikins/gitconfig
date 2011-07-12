@@ -137,7 +137,7 @@
     lsg = ls-github
 
     # ignore local changes to a  file
-    ignore = git update-index --assume-unchanged
+    ignore = update-index --assume-unchanged
 
 [color "branch"]
   current = yellow reverse
