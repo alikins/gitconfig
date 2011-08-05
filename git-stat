@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# needs "ack" installed. which you should have anyway
+#  it's handy
+
+# show the normal modified/etc
+git status -uno
+
+# list of everything like looks like a commonly known
+# source code file
+ack -f | awk '{print $1"$"}' > /tmp/.sources
+
+# find the source looking files in git status output 
+echo "# These looks like source code that has changed"
+echo "#"
+git status --porcelain | grep  -f /tmp/.sources
+
+# show above
+#cat /tmp/git-stat-new-source
+#echo "#"
+#echo "# everything else"
+
+
+# show everything else
+
+#git status --porcelain | grep -v -f /tmp/git-stat-new-source

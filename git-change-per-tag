@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# walk over a tito managed git repo, and show a rough summary of
+# how much each tagged release changes. Not particular robust at
+# the moment
+
+declare -a releases
+
+branch=
+releases=( $(git log $1 --grep "Automatic" --format="format:%H") )
+
+stats () {
+	bugs=$(git diff --shortstat $1 $2)
+	echo $bugs
+#	if [ -n "$bugs" ] ; then
+#		echo  "$bugs"
+#		echo
+#	fi
+}
+
+#handle the special case of changes that aren't released yet
+head=$(git log -n1 --format="format:%H")
+echo "HEAD"
+if [ "$head" != "${releases[0]}" ] ; then
+	stats $head ${releases[0]}
+fi
+
+count=${#releases[@]}
+for (( i = 0 ; i < count; i++ ))
+do
+	if [ -n "${releases[$i]}" ] &&  [ -n "${releases[$i+1]}" ] ; then		
+		version=$(git describe --exact-match "${releases[$i]}")
+		# if we want to show the previous release
+	        #git describe --exact-match "${releases[$i+1]}" 
+
+		diffstats=$(stats ${releases[$i]} ${releases[$i+1]})
+		echo $version
+		echo -e "\t $diffstats"
+	fi
+done

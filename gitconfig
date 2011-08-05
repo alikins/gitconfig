@@ -12,7 +12,7 @@
 
 [merge]
 	#tool = meld
-	tool = vimdiff3
+	tool = diffuse
 	#tool = diffuse
 
 
@@ -156,3 +156,5 @@
   untracked = cyan
 [mergetool "vimdiff3"]
 	cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
+[diff]
+	tool = diffuse

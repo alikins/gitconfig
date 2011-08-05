@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# show a list of file types sorted by most common
+# not particular git focused, but alas
+git ls-files | grep \. | while read line ; do bn=$(basename "$line" .) ; echo ${bn##*.} ; done | sort | uniq -c | sort -n
