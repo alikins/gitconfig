@@ -11,7 +11,7 @@ git status -uno
 ack -f | awk '{print $1"$"}' > /tmp/.sources
 
 # find the source looking files in git status output 
-echo "# These looks like source code that has changed"
+echo "# These look like untracked source code"
 echo "#"
 src_files=$(git status --porcelain | grep  -f /tmp/.sources)
 
