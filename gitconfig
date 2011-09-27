@@ -139,6 +139,11 @@
     # ignore local changes to a  file
     ignore = update-index --assume-unchanged
 
+    # http://sandofsky.com/blog/git-workflow.html
+    # merge code but not history to manually recommit
+    # for emergency use only
+    backrupt = merge --squash
+
 [color "branch"]
   current = yellow reverse
   local = yellow 
