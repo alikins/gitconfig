@@ -86,10 +86,14 @@
     brageall = !git brage refs/remotes
 
     # show a list of tags sorted by when they were tagged
-    tagage = "!sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'" 
+    tagage = "!sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'"
 
     # show a list of every branch and show there latests commit, sorted by last commit
     brlog = "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\") ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git show  -s $C ; echo; done'"
+
+    # show a list of last change in each branch of a given path
+    # roly poly fileheads
+    fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git log -1 $C -- $0; echo; done'"
 
     # not useful itself, but handy to remember for use in scripts
     thisbranch = rev-parse --abbrev-ref HEAD
@@ -101,7 +105,7 @@
     cloneurl = config --get remote.origin.url
 
     # needs python-bugzilla, and git-showbugs
-    openbugs = showbugs -s NEW,ASSIGNED,NEEDINFO,FAILS_QA,REOPENED,ON_DEV 
+    openbugs = showbugs -s NEW,ASSIGNED,NEEDINFO,FAILS_QA,REOPENED,ON_DEV
     closedbugs = showbugs -s PASSES_QA,VERIFIED,RELEASE_PENDING,CLOSED
 
     # show a list of files with bug fixes in them, sorted by popularity of occurance
@@ -113,11 +117,11 @@
     ls-ignored = ls-files --exclude-standard --ignored --others
 
     # based on "buggyfiles" above and https://github.com/cypher/dotfiles/blob/master/bin/git-churn
-    churn = !"git log -M -C --name-only --format=\"format:%n\" | grep . | sort | uniq -c | sort -n" 
+    churn = !"git log -M -C --name-only --format=\"format:%n\" | grep . | sort | uniq -c | sort -n"
 
     # uh, don't do this. list authors by numbers of commits. probably needs a .mailmap
-    churners = shortlog -sn -- 
-    # this does the same thing, except slower... 
+    churners = shortlog -sn --
+    # this does the same thing, except slower...
     #churners = !"git log -M -C  --no-color --format=\"%aN\" | sort | uniq -c | sort -n"
 
 
@@ -126,9 +130,9 @@
     #burners = "!f() { for i in $(git ls-files) ; do git annotate -e $i ; done }; g() { f | awk '{print $2 }' | perl -pe 's/\\(\\<(.+@.+)\\>/\\1/' ; }; g"
     #
     # yeah, don't do this either. list authors by # of bug id's fixed
-    # I suppose the really mad could make "breakers" that figures out who commits code 
+    # I suppose the really mad could make "breakers" that figures out who commits code
     # that breaks. I can save you the time, it was me. I broke it.
-    fixers = !"git log -M -C --format=\"format:%aN\" --grep \"^[[:digit:]]\\+:\" | sort | uniq -c | sort -n" 
+    fixers = !"git log -M -C --format=\"format:%aN\" --grep \"^[[:digit:]]\\+:\" | sort | uniq -c | sort -n"
 
     # who reverts the most. Totally useless, but I like the name
     poppers = !"git log -M -C --format=\"format:%aN\" --grep \"Revert\" | sort | uniq -c | sort -n"
@@ -146,7 +150,7 @@
 
 [color "branch"]
   current = yellow reverse
-  local = yellow 
+  local = yellow
   remote = green
 
 [color "diff"]
@@ -163,3 +167,5 @@
 	cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
 [diff]
 	tool = diffuse
+[github]
+	user = alikins
