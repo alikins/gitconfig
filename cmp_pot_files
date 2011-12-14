@@ -1,23 +1,18 @@
 #!/usr/bin/python
 
-# sort of kind of a translation lint
-#
 # require's polib from https://bitbucket.org/izi/polib/wiki/Home
 #
-# from top level of tree:
-#    check_translations.py /path/to/source/file
+#   python-polib rpm or "easy_install polib"
 #
-#  Should output any untranslated or fuzzy lines from the file in a "lint" style
-#!/usr/bin/python
+#  cmp_pot_files po/old_keys.pot po/new_keys.pot
+#
+#  Should show any new strings between the two revs
 
-# NEEDS polib from http://pypi.python.org/pypi/polib
-# or easy_install polib
 
 import glob
 import polib
 import sys
 
-#FIXME
 
 pot_file1 = sys.argv[1]
 pot_file2 = sys.argv[2]
@@ -33,13 +28,12 @@ strings2 = {}
 for e2 in p2.untranslated_entries():
     strings2[e2.msgid] = e2
 
-#print strings1
-#print strings2
-
+#print "Added"
 for msg in strings1:
     if msg not in strings2:
         print strings1[msg]
 
+#print "Removed"
 #for msg in strings2:
 #    if msg not in strings1:
 #        print strings2[msg]
