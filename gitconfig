@@ -93,7 +93,7 @@
 
     # show a list of last change in each branch of a given path
     # roly poly fileheads
-    fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git log -1 $C -- $0; echo; done'"
+    fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git log -p -1 $C -- $0; echo; done'"
 
     # not useful itself, but handy to remember for use in scripts
     thisbranch = rev-parse --abbrev-ref HEAD
@@ -147,6 +147,9 @@
     # merge code but not history to manually recommit
     # for emergency use only
     backrupt = merge --squash
+
+# show a specifc version of a file
+# git show rev:filename 
 
 [color "branch"]
   current = yellow reverse

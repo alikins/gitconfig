@@ -1,0 +1,45 @@
+#!/usr/bin/python
+
+# sort of kind of a translation lint
+#
+# require's polib from https://bitbucket.org/izi/polib/wiki/Home
+#
+# from top level of tree:
+#    check_translations.py /path/to/source/file
+#
+#  Should output any untranslated or fuzzy lines from the file in a "lint" style
+#!/usr/bin/python
+
+# NEEDS polib from http://pypi.python.org/pypi/polib
+# or easy_install polib
+
+import glob
+import polib
+import sys
+
+#FIXME
+
+pot_file1 = sys.argv[1]
+pot_file2 = sys.argv[2]
+
+p1 = polib.pofile(pot_file1)
+p2 = polib.pofile(pot_file2)
+
+strings1 = {}
+for e1 in p1.untranslated_entries():
+    strings1[e1.msgid] = e1
+
+strings2 = {}
+for e2 in p2.untranslated_entries():
+    strings2[e2.msgid] = e2
+
+#print strings1
+#print strings2
+
+for msg in strings1:
+    if msg not in strings2:
+        print strings1[msg]
+
+#for msg in strings2:
+#    if msg not in strings1:
+#        print strings2[msg]
