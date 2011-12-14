@@ -6,7 +6,7 @@
 # (as opposed to the useless git diff )
 
 
-TMPDIR=$(mktemp -d)
+GCS_TMPDIR=$(mktemp -d)
 
 # our default
 POFILE="po/keys.pot"
@@ -16,10 +16,13 @@ if [ -n "$3" ]; then
    POFILE="$3"
 fi
 
-REV1="$TMPDIR/rev1.pot"
-REV2="$TMPDIR/rev2.pot"
+REV1="$GCS_TMPDIR/rev1.pot"
+REV2="$GCS_TMPDIR/rev2.pot"
 
 git show "$1":"$POFILE" > $REV1
 git show "$2":"$POFILE" > $REV2
 
-cmp_pot_files $REV1 $REV2 
+cmp_pot_files $REV1 $REV2
+
+# cleanup
+rm -rf $GCS_TMPDIR
