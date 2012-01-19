@@ -29,7 +29,12 @@ done
 
 # echo  "git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }'"
 buglist() { 
-for bug in $(git log --format="format:%s" --grep="^[[:digit:]]\\+\s-\s" --grep="^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }') 
+# support bug slug formats
+# 12345: sdfasd
+# 123456 - sdfasdf
+# Bug 3423423 - sdfasd
+# 123124-ssdfsdf
+for bug in $(git log --format="format:%s" --grep="^[[:digit:]]-.*" --grep="Bug [[:digit:]]\\+\s-\s" --grep="^[[:digit:]]\\+\s-\s" --grep="^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }') 
 do
 	 echo -n $bug, 
 done
