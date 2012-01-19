@@ -6,7 +6,7 @@
 declare -a releases
 
 branch=
-releases=( $(git log $1 --grep "Automatic" --format="format:%H") )
+releases=( $(git log $1 --grep="Automatic" --format="format:%H") )
 
 buglist () {
 	bugs=$(git showbugs $1 $2)

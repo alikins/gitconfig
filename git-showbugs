@@ -29,7 +29,7 @@ done
 
 # echo  "git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }'"
 buglist() { 
-for bug in $(git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }') 
+for bug in $(git log --format="format:%s" --grep="^[[:digit:]]\\+\s-\s" --grep="^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }') 
 do
 	 echo -n $bug, 
 done
