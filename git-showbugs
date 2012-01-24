@@ -32,12 +32,15 @@ buglist() {
 # 123456 - sdfasdf
 # Bug 3423423 - sdfasd
 # 123124-ssdfsdf
+# these log regexes are mostly just to weed out some volume,
+# we still basically search for 5+ digit numbers
 for bug in $(git log --format="format:%s"  \
             --grep="^[[:digit:]]-.*" \
             --grep="Bug [[:digit:]]\\+\s-\s" \
             --grep="^[[:digit:]]\\+\s-\s" \
-            --grep="^[[:digit:]]\\+:"  \
-             $log_opts | awk 'match($0, "[[:digit:]]+",ary) {print ary[0]}')
+            --grep="[[:digit:]]\\+"  \
+            $log_opts \
+            | grep -E -o  "[[:digit:]]{5,}")
 do
 	 echo -n $bug, 
 done
