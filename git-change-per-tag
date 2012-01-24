@@ -7,11 +7,11 @@
 declare -a releases
 
 branch=
-releases=( $(git log $1 --grep "Automatic" --format="format:%H") )
+releases=( $(git log $1 --grep="Automatic" --format="format:%H") )
 
 stats () {
-	bugs=$(git diff --shortstat $1 $2)
-	echo $bugs
+	changes=$(git diff --shortstat $1 $2)
+	echo $changes
 #	if [ -n "$bugs" ] ; then
 #		echo  "$bugs"
 #		echo
@@ -34,7 +34,7 @@ do
 	        #git describe --exact-match "${releases[$i+1]}" 
 
 		diffstats=$(stats ${releases[$i]} ${releases[$i+1]})
-		echo $version
-		echo -e "\t $diffstats"
+        printf "%-30.30s %s\n" "$version" "$diffstats"
+		#echo -e "\t $diffstats"
 	fi
 done
