@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 usage() {
 	print "show-bugs [-s|--status] bug_status [-w|--web] log_options"
 }
@@ -40,8 +38,6 @@ for bug in $(git log --format="format:%s"  \
             --grep="^[[:digit:]]\\+\s-\s" \
             --grep="^[[:digit:]]\\+:"  \
              $log_opts | awk 'match($0, "[[:digit:]]+",ary) {print ary[0]}')
-#            $log_opts | awk -F"[:-]" '{print $1 }') 
-#for bug in $(git log --format="format:%s"  --grep="^[[:digit:]]\\+\s-\s" --grep="^[[:digit:]]\\+:"  $log_opts | awk -F"[:-]" '{print $1 }') 
 do
 	 echo -n $bug, 
 done
