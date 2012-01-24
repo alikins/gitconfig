@@ -1,0 +1,43 @@
+#!/bin/bash
+
+usage() {
+	print "show-bugs [-s|--status] bug_status [-w|--web] log_options"
+}
+
+status=
+log_opts=
+while [ "$1" != "" ]; do
+    case $1 in
+        -h | --help )           usage
+                                exit
+                                ;;
+	* )			log_opts="${log_opts} ${1}"
+				shift;
+				;;
+    esac
+    shift
+done
+
+featurelist(){
+git log --format="format:%s" --grep="^[[:alpha:]]*\s\-\s.*" | while read line;
+do
+    echo "${line}";
+done
+};
+
+#for feature in $(git log --format="format:%s" \
+#                 --grep="^[[:alpha:]]*\s\-\s.*" \
+#                 $log_opts | awk -F ' - ' '{print $1 $2 }')
+#do
+#    echo "$feature"
+#done
+#};
+
+
+features=$(featurelist)
+
+if [ -z "$features" ] ; then
+	exit
+fi
+
+echo "$features"

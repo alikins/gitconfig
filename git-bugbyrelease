@@ -5,6 +5,17 @@
 
 declare -a releases
 
+while [ "$1" != "" ]; do
+    case $1 in
+        -h | --help )           usage
+                                exit
+                                ;;
+        -f | --features ) showfeatures=1
+                                ;;
+    esac
+    shift
+done
+
 branch=
 releases=( $(git log $1 --grep="Automatic" --format="format:%H") )
 
@@ -14,7 +25,15 @@ buglist () {
 		echo  "$bugs"
 		echo
 	fi
+    if [ "$showfeatures" == "1" ] ; then
+        features=$(git showfeatures $1 $2)
+        if [ -n "$features" ] ; then
+		    echo  "$features"
+		    echo
+	    fi
+   fi
 }
+
 
 #handle the special case of changes that aren't released yet
 head=$(git log -n1 --format="format:%H")
