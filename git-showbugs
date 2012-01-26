@@ -1,32 +1,37 @@
 #!/bin/bash
 
 usage() {
-	print "show-bugs [-s|--status] bug_status [-w|--web] log_options"
+    print "show-bugs [-w|--web] [-e|--errata] [-s|--status] bug_status log_options "
 }
 
 status=
 log_opts=
 while [ "$1" != "" ]; do
     case $1 in
-        -s | --status )         shift
-                                status=$1
-                                ;;
-        -w | --web )            web=1
-                                ;;
-        -h | --help )           usage
-                                exit
-                                ;;
-	-e | --errata )		errata=1
-				;;
-	* )			log_opts="${log_opts} ${1}"
-				shift;
-				;;
+        -s | --status )
+            shift
+            status=$1
+            ;;
+        -w | --web )
+            web=1
+            ;;
+        -h | --help )
+            usage
+            exit
+            ;;
+        -e | --errata )
+            errata=1
+            ;;
+        * )
+            log_opts="${log_opts} ${1}"
+            shift;
+            ;;
     esac
     shift
 done
 
 # echo  "git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }'"
-buglist() { 
+buglist() {
 # support bug slug formats
 # 12345: sdfasd
 # 123456 - sdfasdf
@@ -42,31 +47,31 @@ for bug in $(git log --format="format:%s"  \
             $log_opts \
             | grep -E -o  "[[:digit:]]{5,}")
 do
-	 echo -n $bug, 
+    echo -n $bug,
 done
 };
 
 
 buglist_raw() {
-	(IFS=,;set -- $(echo "$1") ;echo $*)
-}	
+    (IFS=,;set -- $(echo "$1") ;echo $*)
+}
 
 open_browser()
 {
-	xdg-open "https://bugzilla.redhat.com/buglist.cgi?bug_id=$1;bug_status=$2" ;
+    xdg-open "https://bugzilla.redhat.com/buglist.cgi?bug_id=$1;bug_status=$2" ;
 };
 
 
 bugs=$(buglist)
 
 if [ -z "$bugs" ] ; then
-	exit
+    exit
 fi
 
 if [ "$web" == "1" ] ; then
-	open_browser "$bugs" "$status" > /dev/null 2>&1
+    open_browser "$bugs" "$status" > /dev/null 2>&1
 elif [ "$errata" == "1" ] ; then
-	echo $(buglist_raw "$bugs")	
+    echo $(buglist_raw "$bugs")
 else
-	bugzilla query --bug_status "$status" -b $(buglist) 
+    bugzilla query --bug_status "$status" -b $(buglist)
 fi
