@@ -12,12 +12,16 @@ while [ "$1" != "" ]; do
                                 ;;
         -f | --features ) showfeatures=1
                                 ;;
+        *)
+            log_opts="$*"
+            shift;
+            ;;
     esac
     shift
 done
 
 branch=
-releases=( $(git log $1 --grep="Automatic" --format="format:%H") )
+releases=( $(git log $log_opts --grep="Automatic" --format="format:%H") )
 
 buglist () {
 	bugs=$(git showbugs $1 $2)
