@@ -2,18 +2,17 @@
    email = alikins@redhat.com
    name = Adrian Likins
 
-
 [color]
-	diff = auto
-	status = auto
-	branch = auto
-	interactive = auto
-	ui = auto
+    diff = auto
+    status = auto
+    branch = auto
+    interactive = auto
+    ui = auto
 
 [merge]
-	#tool = meld
-	tool = diffuse
-	#tool = diffuse
+    #tool = meld
+    tool = diffuse
+    #tool = diffuse
 
 
 [alias]
@@ -36,7 +35,6 @@
     # from http://blog.kfish.org/2010/04/git-lola.html
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
-
 
     # from https://git.wiki.kernel.org/index.php/Aliases
     whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
@@ -88,8 +86,8 @@
     # show a list of tags sorted by when they were tagged
     tagage = "!sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'"
 
-    # show a list of every branch and show there latests commit, sorted by last commit
-    brlog = "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\") ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git show  -s $C ; echo; done'"
+    # show a list of every branch and show their latests commit, sorted by last commit
+    brlog = "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\") ; do git show  -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git show --stat -s $C ; echo; done'"
 
     # show a list of last change in each branch of a given path
     # roly poly fileheads
@@ -148,8 +146,46 @@
     # for emergency use only
     backrupt = merge --squash
 
+    # https://github.com/wadey/dotfiles/blob/master/gitconfig
+    # check if a branch has been merged into the current HEAD
+    #  if on master, "git merged topic" will tell you if topic
+    #  has been merged
+    merged = !sh -c 'git rev-list HEAD | grep $(git rev-parse $0)'
+
+    # https://github.com/prabirshrestha/ProfilesAndSettings/blob/master/.gitconfig
+    # show tags and any tag annotation (tito adds tag annotations for example)
+    tags = tag -n1 -l
+
+    # https://github.com/aspiers/git-config/blob/master/bin/git-cdup
+    # could be useful for scripts
+    cdup = rev-parse --show-cdup
+
+    # https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
+    # Show the date of the first commit
+    log-first-date = !"git log --date-order --date=iso --pretty=\"format:%ad\" --reverse | head -1"
+
+    # https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
+    # Editing and adding conflicted files: when we get many merge conflicts
+    # and want to quickly solve them using an editor, then add the  files.
+    edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; $EDITOR `f`"
+    add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
+
+   # from https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
+   # Thanks to jtolds on stackoverflow
+   remote-ref = "!bash -c ' \
+      local_ref=$(git symbolic-ref HEAD); \
+      local_name=${local_ref##refs/heads/}; \
+      remote=$(git config branch.\"#local_name\".remote || echo origin); \
+      remote_ref=$(git config branch.\"$local_name\".merge); \
+      remote_name=${remote_ref##refs/heads/}; \
+      echo remotes/$remote/$remote_name'"
+
+  # also from https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
+  # Thanks to jtolds on stackoverflow
+  rebase-recent = !git rebase -i $(git remote-ref)
+
 # show a specifc version of a file
-# git show rev:filename 
+# git show rev:filename
 
 [color "branch"]
   current = yellow reverse
@@ -166,9 +202,13 @@
   added = yellow
   changed = green
   untracked = cyan
+
+
 [mergetool "vimdiff3"]
-	cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
+   cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
+
 [diff]
-	tool = diffuse
+   tool = diffuse
+
 [github]
-	user = alikins
+   user = alikins
