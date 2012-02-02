@@ -180,9 +180,17 @@
       remote_name=${remote_ref##refs/heads/}; \
       echo remotes/$remote/$remote_name'"
 
-  # also from https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
-  # Thanks to jtolds on stackoverflow
-  rebase-recent = !git rebase -i $(git remote-ref)
+   # also from https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
+   # Thanks to jtolds on stackoverflow
+   rebase-recent = !git rebase -i $(git remote-ref)
+
+   # from http://blog.blindgaenger.net/advanced_git_aliases.html
+   alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ =  \\2/' | sort
+
+   # http://superuser.com/a/169696
+   # prettier than my version of this
+   #  doesn't really work, should probably use git for-each-ref 
+   #heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
 
 # show a specifc version of a file
 # git show rev:filename
