@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 # try to find commits in $2 that are not in $1
 # for example "check_commits.sh master feature" should show you any commits into
@@ -20,7 +20,7 @@ for commit in $commits
 do
     # ignore tito and merge commits
     msg=$(git --no-pager log --pretty=format:"%s%n" -n1 $commit | grep -v Merge | grep -v Automatic | perl -pe "s/^[[:digit:]]+:\s*//g")
-        match=$(git --no-pager log --oneline -n1 -F --grep "$msg" $1)
+        match=$(git --no-pager log --oneline -n1 -F --grep="$msg" $1)
 
     if [ -z "$match" ] ; then
         git --no-pager log --oneline -n1 $log_opts "$commit"
