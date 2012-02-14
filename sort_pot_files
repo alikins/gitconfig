@@ -1,0 +1,39 @@
+#!/usr/bin/python
+
+# require's polib from https://bitbucket.org/izi/polib/wiki/Home
+#
+#   python-polib rpm or "easy_install polib"
+#
+# ./sort_pot_files keys.pot
+#
+#  But why? Well, try it, and see the horror that results from
+#  reading all the strings sorted lexically. Marvel At how many
+#  different ways you say the same thing. Except different. Ponder
+#  how the translators haven't flamed you.
+# 
+
+import glob
+import polib
+import sys
+
+
+pot_file1 = sys.argv[1]
+po = polib.pofile(pot_file1)
+
+strings = {}
+for entry in po.untranslated_entries():
+    strings[entry.msgid] = entry
+
+
+string_list = strings.keys()
+string_list.sort()
+
+#print "Added"
+for msg in string_list:
+        print strings[msg].msgid
+
+
+#print "Removed"
+#for msg in strings2:
+#    if msg not in strings1:
+#        print strings2[msg]

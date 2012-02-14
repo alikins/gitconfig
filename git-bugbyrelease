@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# walk over a tito managed git repo, looking for bug id's in commits 
+# walk over a tito managed git repo, looking for bug id's in commits
 # and displays them grouped by release
 
 declare -a releases
@@ -24,17 +24,17 @@ branch=
 releases=( $(git log $log_opts --grep="Automatic" --format="format:%H") )
 
 buglist () {
-	bugs=$(git showbugs $1 $2)
-	if [ -n "$bugs" ] ; then
-		echo  "$bugs"
-		echo
-	fi
+    bugs=$(git showbugs $1 $2)
+    if [ -n "$bugs" ] ; then
+        echo  "$bugs"
+        echo
+    fi
     if [ "$showfeatures" == "1" ] ; then
         features=$(git showfeatures $1 $2)
         if [ -n "$features" ] ; then
-		    echo  "$features"
-		    echo
-	    fi
+            echo  "$features"
+            echo
+        fi
    fi
 }
 
@@ -43,18 +43,18 @@ buglist () {
 head=$(git log -n1 --format="format:%H")
 echo "HEAD"
 if [ "$head" != "${releases[0]}" ] ; then
-	buglist $head...${releases[0]}
+    buglist $head...${releases[0]}
 fi
 
 count=${#releases[@]}
 for (( i = 0 ; i < count; i++ ))
 do
-	#echo ${releases[$i]}...${releases[$i+1]}
-	if [ -n "${releases[$i]}" ] &&  [ -n "${releases[$i+1]}" ] ; then		
-		git describe --exact-match "${releases[$i]}"
-		# if we want to show the previous release
-	        #git describe --exact-match "${releases[$i+1]}" 
+    #echo ${releases[$i]}...${releases[$i+1]}
+    if [ -n "${releases[$i]}" ] &&  [ -n "${releases[$i+1]}" ] ; then
+        git describe --exact-match "${releases[$i]}"
+        # if we want to show the previous release
+        #git describe --exact-match "${releases[$i+1]}"
 
-		buglist ${releases[$i]}...${releases[$i+1]}
-	fi
+        buglist ${releases[$i]}...${releases[$i+1]}
+    fi
 done
