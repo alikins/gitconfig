@@ -14,6 +14,33 @@
     tool = diffuse
     #tool = diffuse
 
+[diff]
+   tool = diffuse
+
+[mergetool "vimdiff3"]
+   cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
+
+[branch]
+	autosetupmerge = true
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+
+[github]
+   user = alikins
 
 [alias]
 
@@ -201,30 +228,4 @@
 # GIT_SSH for debug ssh stuff (needs to point to
 # a wrapper script to add args, aka "ssh -v $*" in a shell script)
 
-[color "branch"]
-  current = yellow reverse
-  local = yellow
-  remote = green
 
-[color "diff"]
-  meta = yellow bold
-  frag = magenta bold
-  old = red bold
-  new = green bold
-
-[color "status"]
-  added = yellow
-  changed = green
-  untracked = cyan
-
-
-[mergetool "vimdiff3"]
-   cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
-
-[diff]
-   tool = diffuse
-
-[github]
-   user = alikins
-[sendemail]
-	chainreplyto = false
