@@ -109,7 +109,7 @@
     # show a list of files with bug fixes in them, sorted by popularity of occurance
     #  aka, list the buggy files
     # FIXME: should probably make all the bug regex stuff scripts so it's easier to customize
-    buggyfiles = !"git log -M -C --format=\"format:%n\" --grep \"^[[:digit:]]\\+:\" --name-only | grep .  | sort | uniq -c | sort -n"
+    buggyfiles = !"git log -M -C --format=\"format:%n\" --grep=\"^[[:digit:]]\\+:\" --name-only | grep .  | sort | uniq -c | sort -n"
 
     # from https://github.com/cypher/dotfiles/blob/master/gitconfig
     ls-ignored = ls-files --exclude-standard --ignored --others
@@ -135,6 +135,8 @@
     # who reverts the most. Totally useless, but I like the name
     poppers = !"git log -M -C --format=\"format:%aN\" --grep \"Revert\" | sort | uniq -c | sort -n"
 
+    # my delicate sensibilities!
+    cursers = "!f() { git log --grep="shit" --grep="\\shell " --grep="fuck" --grep="cunt" --grep="piss" --grep="cock" --grep="wtf" -M -C --no-color --format=\"format:%aN\"  | sort | uniq -c | sort -n;}; f"
     # shorter alias
     lsg = ls-github
 
@@ -170,9 +172,9 @@
     edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; $EDITOR `f`"
     add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
 
-   # from https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
-   # Thanks to jtolds on stackoverflow
-   remote-ref = "!bash -c ' \
+    # from https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
+    # Thanks to jtolds on stackoverflow
+    remote-ref = "!bash -c ' \
       local_ref=$(git symbolic-ref HEAD); \
       local_name=${local_ref##refs/heads/}; \
       remote=$(git config branch.\"#local_name\".remote || echo origin); \
@@ -180,20 +182,24 @@
       remote_name=${remote_ref##refs/heads/}; \
       echo remotes/$remote/$remote_name'"
 
-   # also from https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
-   # Thanks to jtolds on stackoverflow
-   rebase-recent = !git rebase -i $(git remote-ref)
+    # also from https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
+    # Thanks to jtolds on stackoverflow
+    rebase-recent = !git rebase -i $(git remote-ref)
 
-   # from http://blog.blindgaenger.net/advanced_git_aliases.html
-   alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ =  \\2/' | sort
+    # from http://blog.blindgaenger.net/advanced_git_aliases.html
+    alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ =  \\2/' | sort
 
-   # http://superuser.com/a/169696
-   # prettier than my version of this
-   #  doesn't really work, should probably use git for-each-ref 
-   #heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
+    # http://superuser.com/a/169696
+    # prettier than my version of this
+    #  doesn't really work, should probably use git for-each-ref 
+    #heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
 
 # show a specifc version of a file
 # git show rev:filename
+
+# GIT_TRACE=true to turn on more debugging
+# GIT_SSH for debug ssh stuff (needs to point to
+# a wrapper script to add args, aka "ssh -v $*" in a shell script)
 
 [color "branch"]
   current = yellow reverse
@@ -220,3 +226,5 @@
 
 [github]
    user = alikins
+[sendemail]
+	chainreplyto = false
