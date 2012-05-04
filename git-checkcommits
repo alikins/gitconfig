@@ -1,9 +1,9 @@
 #!/bin/bash 
 
 # try to find commits in $2 that are not in $1
-# for example "check_commits.sh master feature" should show you any commits into
+# for example "git checkcommits  master feature" should show you any commits into
 # feature that didn't make it into master
-# ignoring bugzilla id's
+# ignoring bugzilla id's and tito build commits
 
 branch_1=$1
 shift
