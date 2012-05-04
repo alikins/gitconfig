@@ -18,9 +18,13 @@ commits=$(git --no-pager rev-list $branch_1..$branch_2)
 
 for commit in $commits
 do
+    match=""
+    msg=""
     # ignore tito and merge commits
     msg=$(git --no-pager log --pretty=format:"%s%n" -n1 $commit | grep -v Merge | grep -v Automatic | perl -pe "s/^[[:digit:]]+:\s*//g")
-        match=$(git --no-pager log --oneline -n1 -F --grep="$msg" $1)
+
+    # check non fluff commits to see if they are in branch1's log
+    match=$(git --no-pager log --oneline -n1 -F --grep="$msg" "$branch_1")
 
     if [ -z "$match" ] ; then
         git --no-pager log --oneline -n1 $log_opts "$commit"
