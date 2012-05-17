@@ -1,0 +1,48 @@
+#!/usr/bin/python
+
+# dump out the msg keys by themselves, newline seperated
+#
+# require's polib from https://bitbucket.org/izi/polib/wiki/Home
+#
+#   python-polib rpm or "easy_install polib"
+#
+#  usage: just_strings.py po/keys.pot
+
+import polib
+import sys
+import codecs
+
+# show the strings, this generates a lot
+# more output, mostly not useful
+show_msg_id=False
+show_msg_str=False
+
+pot_file1 = sys.argv[1]
+pofile = polib.pofile(pot_file1)
+
+# oh, unicode/utf8
+sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+
+print "rev_date: %s percent: %s untranslated: %s fuzzy: %s" % (pofile.metadata['PO-Revision-Date'],
+    pofile.percent_translated(),
+    len(pofile.untranslated_entries()),
+    len(pofile.fuzzy_entries()))
+
+print sys.stdout.encoding
+
+# if you want to see the different msgid's in
+# po files tuen
+if show_msg_id or show_msg_str:
+    pofile.sort()
+    for msg in pofile:
+        if show_msg_id:
+            print msg.msgid
+        if show_msg_str:
+            print msg.msgstr
+        
+#pofile.sort()
+#for msg in pofile:
+#    print msg.msgid
+    #print msg.occurrences
+#    for occur in msg.occurrences:
+#        print "%s:%s:%s" % (occur[0], occur[1], msg.msgid)
