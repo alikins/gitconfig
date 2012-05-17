@@ -16,6 +16,24 @@
 
 [diff]
    tool = diffuse
+   suppressBlankEmpty = true
+#   noprefix = true
+
+# convert po files to a less noisy
+# # variant for display in git log -p etc
+# # note that textconv does not affect
+# # git-format-patch output
+[diff "po"]
+    textconv=po_diff
+
+[diff "pot"]
+    textconv=pot_diff
+# # the line's it was picking for the "funcname" 
+# # context were kind of terrible for this case, so
+# # just match a blank line so it's empty
+    xfuncname = "^$"
+    cachetextconv = true
+#
 
 [mergetool "vimdiff3"]
    cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
@@ -41,6 +59,12 @@
 
 [github]
    user = alikins
+
+#[diff "po"]
+#    textconv = cmp_pot_files
+#    cachetextconv = true
+
+
 
 [alias]
 
@@ -118,7 +142,7 @@
 
     # show a list of last change in each branch of a given path
     # roly poly fileheads
-    fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git log -p -1 $C -- $0; echo; done'"
+    fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git --no-pager log  -p -1 $C -- $0; echo; done'"
 
     # not useful itself, but handy to remember for use in scripts
     thisbranch = rev-parse --abbrev-ref HEAD
@@ -157,7 +181,7 @@
     # yeah, don't do this either. list authors by # of bug id's fixed
     # I suppose the really mad could make "breakers" that figures out who commits code
     # that breaks. I can save you the time, it was me. I broke it.
-    fixers = !"git log -M -C --format=\"format:%aN\" --grep \"^[[:digit:]]\\+:\" | sort | uniq -c | sort -n"
+    fixers = !"git log -M -C --format=\"format:%aN\" --grep=\"^[[:digit:]]\\+:\" | sort | uniq -c | sort -n"
 
     # who reverts the most. Totally useless, but I like the name
     poppers = !"git log -M -C --format=\"format:%aN\" --grep \"Revert\" | sort | uniq -c | sort -n"
