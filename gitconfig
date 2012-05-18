@@ -106,6 +106,12 @@
     # what branch contains the sha
     contains = branch --contains
 
+    #from http://serverfault.com/questions/175052/how-to-tell-which-local-branch-is-tracking-which-remote-branch-in-git
+    upstream = rev-parse --symbolic-full-name --abbrev-ref HEAD@{upstream}
+
+    #also from http://serverfault.com/questions/175052/how-to-tell-which-local-branch-is-tracking-which-remote-branch-in-git
+    tbranch = branch -vv
+
     # what got pushed to master in the last hour
     #  based on http://stackoverflow.com/questions/3357219/expose-the-date-a-commit-was-pushed-to-a-repository
     justpushed = log origin/master@{\"1 hour ago\"}..origin/master --
@@ -130,6 +136,8 @@
 
     # show a list of branches sorted by time of last commit
     brage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done; }; g "
+
+    tbrage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do UP="$(git rev-parse --symbolic-full-name --abbrev-ref $C@{upstream} 2> /dev/null)"; TRACKING=$?; UP=\""-> $UP \""; if [ $TRACKING -ne 0 ] ; then UP=\"\"; fi;  git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C $UP\" \"$C\" -- ; done; }; g "
 
     # show remote branches as well
     brageall = !git brage refs/remotes
