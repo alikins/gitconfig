@@ -28,12 +28,17 @@
 
 [diff "pot"]
     textconv=pot_diff
-# # the line's it was picking for the "funcname" 
-# # context were kind of terrible for this case, so
-# # just match a blank line so it's empty
+    # the line's it was picking for the "funcname"
+    # context were kind of terrible for this case, so
+    # just match a blank line so it's empty
     xfuncname = "^$"
     cachetextconv = true
+
 #
+# custom python xfuncname from
+# https://github.com/cofi/dotfiles/blob/master/gitconfig
+#[diff "python"]
+#    xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
 
 [mergetool "vimdiff3"]
    cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
@@ -194,10 +199,12 @@
     # who reverts the most. Totally useless, but I like the name
     poppers = !"git log -M -C --format=\"format:%aN\" --grep \"Revert\" | sort | uniq -c | sort -n"
 
-    # my delicate sensibilities!
-    cursers = "!f() { git log --grep="shit" --grep="\\shell " --grep="fuck" --grep="cunt" --grep="piss" --grep="cock" --grep="wtf" -M -C --no-color --format=\"format:%aN\"  | sort | uniq -c | sort -n;}; f"
     # shorter alias
     lsg = ls-github
+
+    # show which python classes have had the most commits
+    # external script
+    #buggyclasses = "!f() { git log -M -C -p  | pcregrep -o  \"@@.*@@\\sclass\\s(.*)\\(.*\\)\"  | cut -f5 -d\'@\' | sort | uniq -c | sort -n;}; f"
 
     # ignore local changes to a  file
     ignore = update-index --assume-unchanged
