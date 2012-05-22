@@ -1,0 +1,2 @@
+#!/bin/bash
+git log -M -C -p --grep="^[[:digit:]]\\+:" $* | pcregrep -o  "@@.*@@\sclass\s(.*)\(.*\)"  | cut -f5 -d'@' | sort | uniq -c | sort -n
