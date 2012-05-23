@@ -3,7 +3,7 @@
 # show a list of files, latest commit checksum, and subject of latest commit
 # kind of like the github file view
 
-ls | while read line ;
+git ls-files | grep -v \/ | while read line ;
 do
     IFS='
 '
