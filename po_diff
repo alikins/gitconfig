@@ -28,8 +28,6 @@ print "rev_date: %s percent: %s untranslated: %s fuzzy: %s" % (pofile.metadata['
     len(pofile.untranslated_entries()),
     len(pofile.fuzzy_entries()))
 
-print sys.stdout.encoding
-
 # if you want to see the different msgid's in
 # po files tuen
 if show_msg_id or show_msg_str:
