@@ -43,8 +43,11 @@
 [mergetool "vimdiff3"]
    cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
 
+[push]
+   default = tracking
+
 [branch]
-	autosetupmerge = true
+   autosetupmerge = true
 
 [color "branch"]
   current = yellow reverse
@@ -53,9 +56,13 @@
 
 [color "diff"]
   meta = yellow bold
-  frag = magenta bold
+  frag = magenta
+  plain = white bold
   old = red bold
   new = green bold
+  commit = yellow bold
+   func = green dim
+   #plain = white bold
 
 [color "status"]
   added = yellow
@@ -65,13 +72,9 @@
 [github]
    user = alikins
 
-#[diff "po"]
-#    textconv = cmp_pot_files
-#    cachetextconv = true
-
-
-
 [alias]
+
+    l = log --no-merges
 
     # shotcuts
     m = checkout master
@@ -91,6 +94,7 @@
     # from http://blog.kfish.org/2010/04/git-lola.html
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    ll = log --graph --date=short
 
     # from https://git.wiki.kernel.org/index.php/Aliases
     whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
@@ -142,10 +146,12 @@
     # show a list of branches sorted by time of last commit
     brage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done; }; g "
 
-    tbrage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do UP="$(git rev-parse --symbolic-full-name --abbrev-ref $C@{upstream} 2> /dev/null)"; TRACKING=$?; UP=\""-> $UP \""; if [ $TRACKING -ne 0 ] ; then UP=\"\"; fi;  git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C $UP\" \"$C\" -- ; done; }; g "
-
     # show remote branches as well
     brageall = !git brage refs/remotes
+
+    tbrage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do UP="$(git rev-parse --symbolic-full-name --abbrev-ref $C@{upstream} 2> /dev/null)"; TRACKING=$?; UP=\""-> $UP \""; if [ $TRACKING -ne 0 ] ; then UP=\"\"; fi;  git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C $UP\" \"$C\" -- ; done; }; g "
+
+    tbrageall = !git tbrage refs/remotes
 
     # show a list of tags sorted by when they were tagged
     tagage = "!sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'"
@@ -260,6 +266,7 @@
     #  doesn't really work, should probably use git for-each-ref 
     #heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
 
+    pconfig = config -f .git/config
 # show a specifc version of a file
 # git show rev:filename
 
