@@ -17,7 +17,8 @@
 [diff]
    tool = diffuse
    suppressBlankEmpty = true
-#   noprefix = true
+   mnemonicprefix = true
+   #noprefix = true
 
 # convert po files to a less noisy
 # # variant for display in git log -p etc
@@ -25,6 +26,7 @@
 # # git-format-patch output
 [diff "po"]
     textconv=po_diff
+    cachetextconv = true
 
 [diff "pot"]
     textconv=pot_diff
@@ -61,8 +63,8 @@
   old = red bold
   new = green bold
   commit = yellow bold
-   func = green dim
-   #plain = white bold
+  func = green dim
+  #plain = white bold
 
 [color "status"]
   added = yellow
@@ -70,7 +72,7 @@
   untracked = cyan
 
 [github]
-   user = alikins
+	user = alikins
 
 [alias]
 
