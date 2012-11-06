@@ -134,7 +134,7 @@
     diffgrep = log -p -S
 
     # search logs for a bugzilla like number
-    findbug = "!sh -c 'git log --grep ^$1:' -"
+    findbug = "!sh -c 'git log --grep=^$1:' -"
 
     # show what tag/release a bug was part of
     bugrelease = "!sh -c 'git name-rev --tags --name-only  $(git log --grep ^$1: --pretty=\"format:%H\n\")' -"
