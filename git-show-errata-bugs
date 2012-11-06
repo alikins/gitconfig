@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# used to get the bug list out of a git changelog, and then show 
+# the errata readiness of the bugs that are listed
+
+usage() {
+    print "show-errata-bugs [-w|--web] [-e|--errata] [-s|--status] bug_status log_options "
+    print "  (something like: git-show-errata-bugs --web  HEAD...tag-of-previous-errata-build)"
+}
+
+status=
+status_query=
+log_opts=
+while [ "$1" != "" ]; do
+    case $1 in
+        -s | --status )
+            shift
+            status=$1
+            ;;
+        -w | --web )
+            web=1
+            ;;
+        -h | --help )
+            usage
+            exit
+            ;;
+        -e | --errata )
+            errata=1
+            ;;
+        * )
+            log_opts="${log_opts} ${1}"
+            shift;
+            ;;
+    esac
+    shift
+done
+
+if [ -n "$status" ] ; then
+    status_query="--bug_status=${status}"
+fi
+
+# echo  "git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }'"
+buglist() {
+# support bug slug formats
+# 12345: sdfasd
+# 123456 - sdfasdf
+# Bug 3423423 - sdfasd
+# 123124-ssdfsdf
+# these log regexes are mostly just to weed out some volume,
+# we still basically search for 5+ digit numbers
+for bug in $(git log --format="format:%s"  \
+            --grep="^[[:digit:]]-.*" \
+            --grep="Bug [[:digit:]]\\+\s-\s" \
+            --grep="^[[:digit:]]\\+\s-\s" \
+            --grep="[[:digit:]]\\+"  \
+            $log_opts \
+            | grep -E -o  "[[:digit:]]{5,}")
+do
+    echo -n "${bug}%2C"
+done
+};
+
+
+buglist_raw() {
+    (IFS=,;set -- $(echo "$1") ;echo $*)
+}
+
+open_browser()
+{
+    xdg-open "https://bugzilla.redhat.com/buglist.cgi?bug_id=$1;bug_status=$2" ;
+    xdg-open "https://bugzilla.redhat.com/buglist.cgi?v4=pm_ack%2B&j_top=OR&bug_id=$1&bug_id_type=anyexact&list_id=768003&columnlist=bug_status%2Cshort_desc&f4=flagtypes.name&query_format=advanced&o4=notsubstring"
+    xdg-open "https://bugzilla.redhat.com/buglist.cgi?v4=qa_ack%2B&j_top=OR&bug_id=$1&bug_id_type=anyexact&list_id=768003&columnlist=bug_status%2Cshort_desc&f4=flagtypes.name&query_format=advanced&o4=notsubstring"
+    xdg-open "https://bugzilla.redhat.com/buglist.cgi?v4=devel_ack%2B&j_top=OR&bug_id=$1&bug_id_type=anyexact&list_id=768003&columnlist=bug_status%2Cshort_desc&f4=flagtypes.name&query_format=advanced&o4=notsubstring"
+    xdg-open "https://bugzilla.redhat.com/buglist.cgi?v4=rhel-6.4.0%2B&j_top=OR&bug_id=$1&bug_id_type=anyexact&list_id=768003&columnlist=bug_status%2Cshort_desc&f4=flagtypes.name&query_format=advanced&o4=notsubstring"
+e
+};
+
+
+bugs=$(buglist)
+
+if [ -z "$bugs" ] ; then
+    exit
+fi
+
+if [ "$web" == "1" ] ; then
+    open_browser "$bugs" "$status" > /dev/null 2>&1
+elif [ "$errata" == "1" ] ; then
+    echo $(buglist_raw "$bugs")
+else
+    echo bugzilla query ${status_query} -b $(buglist)
+fi
