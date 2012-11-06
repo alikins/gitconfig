@@ -5,6 +5,7 @@ usage() {
 }
 
 status=
+status_query=
 log_opts=
 while [ "$1" != "" ]; do
     case $1 in
@@ -29,6 +30,10 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
+
+if [ -n "$status" ] ; then
+    status_query="--bug_status=${status}"
+fi
 
 # echo  "git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }'"
 buglist() {
@@ -73,5 +78,5 @@ if [ "$web" == "1" ] ; then
 elif [ "$errata" == "1" ] ; then
     echo $(buglist_raw "$bugs")
 else
-    bugzilla query --bug_status "$status" -b $(buglist)
+    bugzilla query ${status_query} -b $(buglist)
 fi
