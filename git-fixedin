@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# walk over a tito managed git repo, looking for bug id's in commits
+# and displays them grouped by release
+
+declare -a releases
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -h | --help )           usage
+                                exit
+                                ;;
+        -f | --features ) showfeatures=1
+                                ;;
+        *)
+            bug_to_find="$1"
+            shift;
+            log_opts="$*"
+            shift;
+            ;;
+    esac
+    shift
+done
+
+branch=
+releases=( $(git log $log_opts --grep="Automatic" --format="format:%H") )
+
+buglist () {
+    bugs=$(git showbugs -e $1)
+    release="$2"
+    if [ -n "$bugs" ] ; then
+        for  bug in $bugs
+        do
+            echo "$bug" "${release}"
+        done
+    fi
+    if [ "$showfeatures" == "1" ] ; then
+        features=$(git showfeatures $1 $2)
+        if [ -n "$features" ] ; then
+            echo  "$features"
+            echo
+        fi
+   fi
+}
+
+
+#handle the special case of changes that aren't released yet
+head=$(git log -n1 --format="format:%H")
+if [ "$head" != "${releases[0]}" ] ; then
+    bug_and_versions=$(buglist $head...${releases[0]} "HEAD")
+fi
+
+# add trailing new line
+bug_and_versions+="\n"
+
+count=${#releases[@]}
+for (( i = 0 ; i < count; i++ ))
+do
+    #echo ${releases[$i]}...${releases[$i+1]}
+    if [ -n "${releases[$i]}" ] &&  [ -n "${releases[$i+1]}" ] ; then
+        release_tag=$(git describe --exact-match "${releases[$i]}" 2> /dev/null)
+        # if we want to show the previous release
+        #git describe --exact-match "${releases[$i+1]}"
+        status="$?"
+        # if we don't have that tag anymore, ignore it
+        if [ "${status}" -ne "128" ] ; then
+            bug_and_versions+="\n"
+            bug_and_versions+=$(buglist ${releases[$i]}...${releases[$i+1]} ${release_tag})
+       fi
+    fi
+done
+
+echo -e "${bug_and_versions}" | grep ^[^$] | sort -n| uniq | grep "^${bug_to_find}"
