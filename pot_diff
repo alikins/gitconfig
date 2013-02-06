@@ -26,6 +26,7 @@ pofile = polib.pofile(pot_file1)
 
 pofile.sort()
 for msg in pofile:
+    print
     #print msg.occurrences
     print msg.msgid
 #    for occur in msg.occurrences:

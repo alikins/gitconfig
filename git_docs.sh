@@ -6,6 +6,10 @@
 # docs, end result is a 'git log -p' in the docs history repo
 # should give you readable api diff between versions.
 #
+# Checkout https://github.com/alikins/python-rhsm-docs and run
+# 'git log -p' for an example. Or look at
+#    python-rhsm-git-docs-example.txt
+#
 # Don't expect this to work without hacking.
 #
 # Checkout out every tag of a git repo of a python project, 

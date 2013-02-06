@@ -24,7 +24,6 @@ done
 
 branch=
 releases=( $(git log $log_opts --grep="Automatic" --format="format:%H") )
-
 buglist () {
     bugs=$(git showbugs -e $1)
     release="$2"
