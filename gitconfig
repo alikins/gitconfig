@@ -14,6 +14,10 @@
     tool = diffuse
     #tool = diffuse
 
+[status]
+    relativePaths = true
+    showUntrackedFiles = no
+
 [diff]
    tool = diffuse
    suppressBlankEmpty = true
@@ -189,6 +193,26 @@
     # based on "buggyfiles" above and https://github.com/cypher/dotfiles/blob/master/bin/git-churn
     churn = !"git log -M -C --name-only --format=\"format:%n\" | grep . | sort | uniq -c | sort -n"
 
+    # branches that are merged locally already, note this includes master itself
+    lurkers = branch --merged master
+
+    # as per https://twitter.com/jrbowes/status/304942580133679105
+    # delete all local branches that have been merged into master
+    #
+    # note, "git branch --merged master" will helpfully include master itself
+    # as a branch that has been fully merged to master. Gee, thanks git.
+    #
+    #  So for sanity, filter out current branch and anything named master
+    #
+    # Also note -d won't delete branches that aren't merged to their tracking
+    # branch. Use -D if you dont care.
+    #
+    #  See also 'git remote prune
+    purge = !"git branch -d $(git branch --merged master | grep -v -e '*' -e 'master')"
+
+    # mostly from http://stackoverflow.com/questions/67699/how-do-i-clone-all-remote-branches-with-git
+    #binge = "!sh -c 'for BRANCH in $(git branch -a | sed -n \"\=/HEAD$=d; \=/master$=d;s=  remotes/==p\") ; do branch --track ${BRANCH##*/} $BRANCH ; done' "
+
     # uh, don't do this. list authors by numbers of commits. probably needs a .mailmap
     churners = shortlog -sn --
     # this does the same thing, except slower...
@@ -220,7 +244,7 @@
     # http://sandofsky.com/blog/git-workflow.html
     # merge code but not history to manually recommit
     # for emergency use only
-    backrupt = merge --squash
+    bankrupt = merge --squash
 
     # https://github.com/wadey/dotfiles/blob/master/gitconfig
     # check if a branch has been merged into the current HEAD
