@@ -1,6 +1,6 @@
-[user]
-   email = alikins@redhat.com
-   name = Adrian Likins
+# local user config, usernames, etc
+[include]
+    path=~/.gitconfig-local
 
 [color]
     diff = auto
@@ -12,7 +12,6 @@
 [merge]
     #tool = meld
     tool = diffuse
-    #tool = diffuse
 
 [status]
     relativePaths = true
@@ -74,9 +73,6 @@
   added = yellow
   changed = green
   untracked = cyan
-
-[github]
-	user = alikins
 
 [alias]
 
