@@ -1,0 +1,33 @@
+#!/bin/bash -x
+
+# checkout a github pr by number, but create the local
+# branch name based on the remote branch name
+#
+# assumes github is the remote specified by "origin"
+#
+#
+PR_BRANCH="pr/$1"
+
+# fetch the pr locally
+git fetch origin refs/pull/$1/head:"${PR_BRANCH}"
+
+# find the sha/rev of that pr branch
+PR_SHA=$(git rev-parse "${PR_BRANCH}")
+
+# find the remote branch that contains the sha, which we
+# should have just fetched
+REMOTE_BRANCH=$(git branch -r --contains "${PR_SHA}")
+
+# checkout the branch the pr was from
+# this assumes relatively newish git that will 
+# take a remote branch 'origin/whatever/some-branch"
+# and create a local 'whatever/some-branch" branch
+
+git checkout -t ${REMOTE_BRANCH}
+
+# if one were include to name the local branch based on
+# the pr, you can either munge the remote name to a useful
+# local name, or just do the above and rename. Something
+# like (untested):
+# CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+# git branch -m "${CURRENT_BRANCH}-pr-$1"
