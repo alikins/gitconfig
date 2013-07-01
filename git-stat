@@ -13,10 +13,9 @@ ack -f | awk '{print $1"$"}' > /tmp/.sources
 # find the source looking files in git status output 
 echo "# These look like untracked source code"
 echo "#"
-src_files=$(git status --porcelain | grep  -f /tmp/.sources)
 
 
-git status --porcelain | grep "^??" | grep  -f /tmp/.sources | while read line;
+git status -u --porcelain | grep "^??" | grep  -f /tmp/.sources | while read line;
 do
     echo -e "#\t${line##??}"
 done
