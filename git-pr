@@ -8,6 +8,12 @@
 #
 PR_BRANCH="pr/$1"
 
+git fetch origin
+
+# delete a local branch if we have a copy
+# already, so we handle rebased branches better
+git branch -D "${PR_BRANCH}"
+
 # fetch the pr locally
 git fetch origin refs/pull/$1/head:"${PR_BRANCH}"
 
@@ -23,7 +29,7 @@ REMOTE_BRANCH=$(git branch -r --contains "${PR_SHA}")
 # take a remote branch 'origin/whatever/some-branch"
 # and create a local 'whatever/some-branch" branch
 
-git checkout -t ${REMOTE_BRANCH}
+git checkout -f -t ${REMOTE_BRANCH}
 
 # if one were include to name the local branch based on
 # the pr, you can either munge the remote name to a useful
