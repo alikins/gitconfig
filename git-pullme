@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# show remote branches that do not have a pull request
+
+# assumes origin==github
+grep -v -f <(git ls-remote origin refs/pull/*/head )  <(git ls-remote -h origin)
