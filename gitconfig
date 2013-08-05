@@ -167,8 +167,12 @@
     # show a list of tags sorted by when they were tagged
     tagage = "!sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'"
 
+    # show a list of tags sorted by `sort` version compare (ie, more or less rpmvercmp)
+    tagsort = "!sh -c 'git tag -l $1 | sort --version-sort'"
+
     # show a list of every branch and show their latests commit, sorted by last commit
     brlog = "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\") ; do git show  -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git show --stat -s $C ; echo; done'"
+    brlogremote = "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/remotes/origin --format=\"%(refname:short)\") ; do git show  -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git show --stat -s $C ; echo; done'"
 
     # show a list of last change in each branch of a given path
     # roly poly fileheads
