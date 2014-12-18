@@ -1,6 +1,6 @@
 # local user config, usernames, etc
 [include]
-    path=~/.gitconfig-local
+    path = ~/.gitconfig-local
 
 [color]
     diff = auto
@@ -28,21 +28,28 @@
 # # note that textconv does not affect
 # # git-format-patch output
 [diff "po"]
-    textconv=po_diff
+    textconv = po_diff
     cachetextconv = true
 
 [diff "pot"]
-    textconv=pot_diff
+    textconv = pot_diff
     # the line's it was picking for the "funcname"
     # context were kind of terrible for this case, so
     # just match a blank line so it's empty
-    xfuncname = "^$"
+    xfuncname = ^$
     cachetextconv = true
 
 # from http://stackoverflow.com/questions/2006351/gettext-po-files-under-version-control/11291001#11291001
 # more verbose than my minimal version
 [diff "msgcat"]
-    textconv=msgcat --no-location --no-wrap --sort-output
+    textconv = msgcat --no-location --no-wrap --sort-output
+
+# to ignore something...
+[diff "silent"]
+    command = true
+
+[rerere]
+	enabled = true
 
 #
 # custom python xfuncname from
@@ -90,8 +97,11 @@
     # shotcuts
     m = checkout master
 
+    # show diff in the commit preview
+
+    c = commit -v
     # not a fan of random merges
-    pull = pull --ff-only
+    #pull = pull --ff-only
 
     # because I always typo git commit --ammend, er, amend
     amend = commit --amend
@@ -108,11 +118,11 @@
     ll = log --graph --date=short
 
     # from https://git.wiki.kernel.org/index.php/Aliases
-    whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+    #whois = !sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\\" --author=\"$1\"' -
     whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
 
     # ignore po files in "git log", sorry translators ;-<
-    slog = "!sh -c 'git log --no-merges $1 `ls | grep -v ^po`' -"
+    slog = !sh -c 'git log --no-merges $1 `ls | grep -v ^po`' -
 
     # typo
     rbanch = branch
@@ -143,13 +153,17 @@
     diffgrep = log -p -S
 
     # search logs for a bugzilla like number
-    findbug = "!sh -c 'git log --grep=^$1:' -"
+    findbug = !sh -c 'git log --grep=^$1:' -
+
+    # search for a pattern in branch names, file names, or file contents
+    #find = "!f() { ((git branch -a ; git ls-files) | grep $1); git grep $1 }; f"
+    find = "!f() { (git branch -a ; git ls-files) | grep $1; GIT_PAGER=cat git grep $1; }; f"
 
     # show what tag/release a bug was part of
-    bugrelease = "!sh -c 'git name-rev --tags --name-only  $(git log --grep ^$1: --pretty=\"format:%H\n\")' -"
+    #bugrelease = "!sh -c 'git name-rev --tags --name-only  $(git log --grep ^$1: --pretty=\"format:%H\"\n")' -
 
     # from https://gist.github.com/492227
-    lost = !"git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset %f' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
+    lost = "!git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset %f' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
 
     # show a log without the formating, occasionaly handy for c&p
     rawlog = log --format=\"format:commit %H%nAuthor:%an%n%n%B%n\"
@@ -160,15 +174,15 @@
     # show remote branches as well
     brageall = !git brage refs/remotes
 
-    tbrage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do UP="$(git rev-parse --symbolic-full-name --abbrev-ref $C@{upstream} 2> /dev/null)"; TRACKING=$?; UP=\""-> $UP \""; if [ $TRACKING -ne 0 ] ; then UP=\"\"; fi;  git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C $UP\" \"$C\" -- ; done; }; g "
+    tbrage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do UP=$(git rev-parse --symbolic-full-name --abbrev-ref $C@{upstream} 2> /dev/null); TRACKING=$?; UP=\"-> $UP \"; if [ $TRACKING -ne 0 ] ; then UP=\"\"; fi;  git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C $UP\" \"$C\" -- ; done; }; g "
 
     tbrageall = !git tbrage refs/remotes
 
     # show a list of tags sorted by when they were tagged
-    tagage = "!sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'"
+    tagage = !sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'
 
     # show a list of tags sorted by `sort` version compare (ie, more or less rpmvercmp)
-    tagsort = "!sh -c 'git tag -l $1 | sort --version-sort'"
+    tagsort = !sh -c 'git tag -l $1 | sort --version-sort'
 
     # show a list of every branch and show their latests commit, sorted by last commit
     brlog = "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\") ; do git show  -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git show --stat -s $C ; echo; done'"
@@ -178,6 +192,8 @@
     # roly poly fileheads
     fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git --no-pager log  -p -1 $C -- $0; echo; done'"
 
+    yesterday="log --author=alikins@redhat.com --all --decorate --since=yesterday"
+#    yesterday = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do echo git --no-pager log --since=yesterday -p -1 $C -- $0; done'"
     # not useful itself, but handy to remember for use in scripts
     thisbranch = rev-parse --abbrev-ref HEAD
 
@@ -194,13 +210,13 @@
     # show a list of files with bug fixes in them, sorted by popularity of occurance
     #  aka, list the buggy files
     # FIXME: should probably make all the bug regex stuff scripts so it's easier to customize
-    buggyfiles = !"git log -M -C --format=\"format:%n\" --grep=\"^[[:digit:]]\\+:\" --name-only | grep .  | sort | uniq -c | sort -n"
+    buggyfiles = "!git log -M -C --format=\"format:%n\" --grep=\"^[[:digit:]]\\+:\" --name-only | grep .  | sort | uniq -c | sort -n"
 
     # from https://github.com/cypher/dotfiles/blob/master/gitconfig
     ls-ignored = ls-files --exclude-standard --ignored --others
 
     # based on "buggyfiles" above and https://github.com/cypher/dotfiles/blob/master/bin/git-churn
-    churn = !"git log -M -C --name-only --format=\"format:%n\" | grep . | sort | uniq -c | sort -n"
+    churn = !git log -M -C --name-only --format=\"format:%n\" | grep . | sort | uniq -c | sort -n
 
     # branches that are merged locally already, note this includes master itself
     lurkers = branch --merged master
@@ -217,7 +233,7 @@
     # branch. Use -D if you dont care.
     #
     #  See also 'git remote prune
-    purge = !"git branch -d $(git branch --merged master | grep -v -e '*' -e 'master')"
+    purge = !git branch -d $(git branch --merged master | grep -v -e '*' -e 'master')
 
     # mostly from http://stackoverflow.com/questions/67699/how-do-i-clone-all-remote-branches-with-git
     #binge = "!sh -c 'for BRANCH in $(git branch -a | sed -n \"\=/HEAD$=d; \=/master$=d;s=  remotes/==p\") ; do branch --track ${BRANCH##*/} $BRANCH ; done' "
@@ -235,10 +251,10 @@
     # yeah, don't do this either. list authors by # of bug id's fixed
     # I suppose the really mad could make "breakers" that figures out who commits code
     # that breaks. I can save you the time, it was me. I broke it.
-    fixers = !"git log -M -C --format=\"format:%aN\" --grep=\"^[[:digit:]]\\+:\" | sort | uniq -c | sort -n"
+    fixers = !git log -M -C --format=\"format:%aN\" --grep=\"^[[:digit:]]\\+:\" | sort | uniq -c | sort -n
 
     # who reverts the most. Totally useless, but I like the name
-    poppers = !"git log -M -C --format=\"format:%aN\" --grep \"Revert\" | sort | uniq -c | sort -n"
+    poppers = !git log -M -C --format=\"format:%aN\" --grep \"Revert\" | sort | uniq -c | sort -n
 
     # shorter alias
     lsg = ls-github
@@ -271,7 +287,7 @@
 
     # https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
     # Show the date of the first commit
-    log-first-date = !"git log --date-order --date=iso --pretty=\"format:%ad\" --reverse | head -1"
+    log-first-date = !git log --date-order --date=iso --pretty=\"format:%ad\" --reverse | head -1
 
     # https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
     # Editing and adding conflicted files: when we get many merge conflicts
@@ -281,20 +297,14 @@
 
     # from https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
     # Thanks to jtolds on stackoverflow
-    remote-ref = "!bash -c ' \
-      local_ref=$(git symbolic-ref HEAD); \
-      local_name=${local_ref##refs/heads/}; \
-      remote=$(git config branch.\"#local_name\".remote || echo origin); \
-      remote_ref=$(git config branch.\"$local_name\".merge); \
-      remote_name=${remote_ref##refs/heads/}; \
-      echo remotes/$remote/$remote_name'"
+    remote-ref = "!bash -c '       local_ref=$(git symbolic-ref HEAD);       local_name=${local_ref##refs/heads/};       remote=$(git config branch.\"#local_name\".remote || echo origin);       remote_ref=$(git config branch.\"$local_name\".merge);       remote_name=${remote_ref##refs/heads/};       echo remotes/$remote/$remote_name'"
 
     # also from https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
     # Thanks to jtolds on stackoverflow
     rebase-recent = !git rebase -i $(git remote-ref)
 
     # from http://blog.blindgaenger.net/advanced_git_aliases.html
-    alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ =  \\2/' | sort
+    alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ = \\2/' | sort
 
     # http://superuser.com/a/169696
     # prettier than my version of this
@@ -302,6 +312,22 @@
     #heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
 
     pconfig = config -f .git/config
+
+    # for "reverse" bisects, where you are trying to find the
+    # first working commit
+    bisect-fixed = bisect bad
+    bisect-unfixed = bisect good
+
+    # from https://gist.github.com/awood/11189030
+    oldest-ancestor = !bash -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -
+    branchdiff = "!f() { head=${1:-HEAD} ; ancestor=`git oldest-ancestor master $head` ; git diff $ancestor..$head ; }; f"
+    visual-branchdiff = "!f() { head=${1:-HEAD} ; ancestor=`git oldest-ancestor master $head` ; git diff --name-only $ancestor..$head | xargs diffuse -s -r $ancestor ; }; f &"
+
+    #root = !pwd
+    #shell = !$1
+    #shell = !$0
+    #shell = !sh -c $0
+    #shell = showvirtualenv systempkgtest -c 'bash'
 
 # show a specifc version of a file
 # git show rev:filename
