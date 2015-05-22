@@ -17,6 +17,9 @@
     relativePaths = true
     showUntrackedFiles = no
 
+[rerere]
+	enabled = true
+
 [diff]
    tool = diffuse
    suppressBlankEmpty = true
@@ -48,8 +51,11 @@
 [diff "silent"]
     command = true
 
-[rerere]
-	enabled = true
+
+[diff "podiff"]
+    #textconv = /usr/bin/podiff -t
+    #command = /usr/bin/podiff -D-u -L
+
 
 #
 # custom python xfuncname from
@@ -119,6 +125,7 @@
 
     # from https://git.wiki.kernel.org/index.php/Aliases
     #whois = !sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\\" --author=\"$1\"' -
+
     whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
 
     # ignore po files in "git log", sorry translators ;-<
@@ -168,8 +175,9 @@
     # show a log without the formating, occasionaly handy for c&p
     rawlog = log --format=\"format:commit %H%nAuthor:%an%n%n%B%n\"
 
-    # show a list of branches sorted by time of last commit
-    brage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done; }; g "
+    # show a list of branches sorted by time of last commit.
+    # This is in a seperate script now.
+    #brage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done; }; g "
 
     # show remote branches as well
     brageall = !git brage refs/remotes
@@ -194,6 +202,7 @@
 
     yesterday="log --author=alikins@redhat.com --all --decorate --since=yesterday"
 #    yesterday = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do echo git --no-pager log --since=yesterday -p -1 $C -- $0; done'"
+    
     # not useful itself, but handy to remember for use in scripts
     thisbranch = rev-parse --abbrev-ref HEAD
 
@@ -335,5 +344,4 @@
 # GIT_TRACE=true to turn on more debugging
 # GIT_SSH for debug ssh stuff (needs to point to
 # a wrapper script to add args, aka "ssh -v $*" in a shell script)
-
 

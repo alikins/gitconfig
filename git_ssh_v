@@ -1,3 +1,6 @@
 #!/bin/bash 
+#
+# Add to path as git_ssh_v and set GIT_SSH to the path, ie
+# GIT_SSH=~/bin/git_ssh_v git fetch origin
 ssh -v $*
 
