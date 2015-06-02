@@ -10,6 +10,13 @@
 #
 # License: GPLv2
 
+
+# default:relative, :short, :local, :iso8601, :rfc2822 or :raw to the end of the fieldname; e.g.
+#        %(taggerdate:relative).
+# %(upstream:short)
+#
+
+    #--format="%1B[0;34m%(authordate:iso8601)%1B[m %1B[0;32m%(refname:short)%1B[m   %(subject)" "${REFS}"
 REFS=${1:-refs/heads}
 git for-each-ref --sort=committerdate \
-    --format="%1B[0;33m%(authordate:relative)%1B[m %1B[0;34m%(refname:short)%1B[m -  %(subject)" "${REFS}"
+    --format="%1B[0;34m%(authordate:iso8601)%1B[m %1B[0;32m%(refname:short)%1B[m  %(subject)" "${REFS}"
