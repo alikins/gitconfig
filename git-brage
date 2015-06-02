@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Show a colurful list of git branches sorted by last commit date.
+# Show a colorful list of git branches sorted by last commit date.
 #
 # Think of it as the 'ls -lart' of 'git branch'
 #
