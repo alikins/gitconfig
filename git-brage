@@ -6,7 +6,10 @@
 #
 # Adrian Likins <adrian@likins.com>
 #
-# License: GPLv3
+# https://github.com/alikins/gitconfig
+#
+# License: GPLv2
 
+REFS=${1:-refs/heads}
 git for-each-ref --sort=committerdate \
-    --format="%1B[0;33m%(authordate:relative)%1B[m %1B[0;34m%(refname:short)%1B[m -  %(subject)" refs/heads
+    --format="%1B[0;33m%(authordate:relative)%1B[m %1B[0;34m%(refname:short)%1B[m -  %(subject)" "${REFS}"
