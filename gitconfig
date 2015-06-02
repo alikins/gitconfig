@@ -56,7 +56,6 @@
     #textconv = /usr/bin/podiff -t
     #command = /usr/bin/podiff -D-u -L
 
-
 #
 # custom python xfuncname from
 # https://github.com/cofi/dotfiles/blob/master/gitconfig
@@ -97,6 +96,27 @@
   untracked = cyan
 
 [alias]
+    # Mostly in order they were added, except my most heavily
+    # used aliases are first.
+
+    # commits not pushed to $1, master by default
+    unpushed = cherry -v
+    
+    # what branch contains the sha
+    contains = branch --contains
+    
+    # show a list of tags sorted by when they were tagged
+    tagage = !sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'
+
+    # show a list of tags sorted by `sort` version compare (ie, more or less rpmvercmp)
+    tagsort = !sh -c 'git tag -l $1 | sort --version-sort'
+    
+    # https://github.com/prabirshrestha/ProfilesAndSettings/blob/master/.gitconfig
+    # show tags and any tag annotation (tito adds tag annotations for example)
+    tags = tag -n1 -l
+    
+    # url of origin, about 99% of what I use git config --list for
+    cloneurl = config --get remote.origin.url
 
     l = log --no-merges
 
@@ -134,14 +154,9 @@
     # typo
     rbanch = branch
 
-    # commits not pushed to $1
-    unpushed = cherry -v
-
     # what tag contains the sha
     whatrelease = name-rev --name-only
 
-    # what branch contains the sha
-    contains = branch --contains
 
     #from http://serverfault.com/questions/175052/how-to-tell-which-local-branch-is-tracking-which-remote-branch-in-git
     upstream = rev-parse --symbolic-full-name --abbrev-ref HEAD@{upstream}
@@ -182,15 +197,10 @@
     # show remote branches as well
     brageall = !git brage refs/remotes
 
+    # TODO: make these options of 'git-brage' script
     tbrage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do UP=$(git rev-parse --symbolic-full-name --abbrev-ref $C@{upstream} 2> /dev/null); TRACKING=$?; UP=\"-> $UP \"; if [ $TRACKING -ne 0 ] ; then UP=\"\"; fi;  git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C $UP\" \"$C\" -- ; done; }; g "
 
     tbrageall = !git tbrage refs/remotes
-
-    # show a list of tags sorted by when they were tagged
-    tagage = !sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'
-
-    # show a list of tags sorted by `sort` version compare (ie, more or less rpmvercmp)
-    tagsort = !sh -c 'git tag -l $1 | sort --version-sort'
 
     # show a list of every branch and show their latests commit, sorted by last commit
     brlog = "!sh -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\") ; do git show  -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git show --stat -s $C ; echo; done'"
@@ -198,7 +208,7 @@
 
     # show a list of last change in each branch of a given path
     # roly poly fileheads
-    fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git --no-pager log  -p -1 $C -- $0; echo; done'"
+    #fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git --no-pager log  -p -1 $C -- $0; echo; done'"
 
     yesterday="log --author=alikins@redhat.com --all --decorate --since=yesterday"
 #    yesterday = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do echo git --no-pager log --since=yesterday -p -1 $C -- $0; done'"
@@ -209,8 +219,6 @@
     # remove a file from index
     unadd = git reset HEAD
 
-    # url of origin, about 99% of what I use git config --list for
-    cloneurl = config --get remote.origin.url
 
     # needs python-bugzilla, and git-showbugs
     openbugs = showbugs -s NEW,ASSIGNED,NEEDINFO,FAILS_QA,REOPENED,ON_DEV
@@ -286,9 +294,6 @@
     #  has been merged
     merged = !sh -c 'git rev-list HEAD | grep $(git rev-parse $0)'
 
-    # https://github.com/prabirshrestha/ProfilesAndSettings/blob/master/.gitconfig
-    # show tags and any tag annotation (tito adds tag annotations for example)
-    tags = tag -n1 -l
 
     # https://github.com/aspiers/git-config/blob/master/bin/git-cdup
     # could be useful for scripts
