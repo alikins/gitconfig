@@ -210,7 +210,6 @@
     # roly poly fileheads
     #fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git --no-pager log  -p -1 $C -- $0; echo; done'"
 
-    yesterday="log --author=alikins@redhat.com --all --decorate --since=yesterday"
 #    yesterday = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do echo git --no-pager log --since=yesterday -p -1 $C -- $0; done'"
     
     # not useful itself, but handy to remember for use in scripts
