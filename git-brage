@@ -15,8 +15,35 @@
 #        %(taggerdate:relative).
 # %(upstream:short)
 #
+usage () {
+    echo "git-brage [-v|--verbose] [extra for-each-ref options]"
+}
 
-    #--format="%1B[0;34m%(authordate:iso8601)%1B[m %1B[0;32m%(refname:short)%1B[m   %(subject)" "${REFS}"
-REFS=${1:-refs/heads}
+TRACKING=${TRACKING:-}
+REFS=
+OTHER_OPTS=
+REFS=${REFS:-refs/heads}
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -v | --verbose )
+            TRACKING="-> %(upstream:short)"
+            ;;
+        -h | --help )
+            usage
+            exit
+           ;;
+        -a | --all)
+            REFS=
+           ;;
+        -r | --remote)
+            REFS=refs/remotes
+           ;;
+    esac
+    shift
+done
+
+
+
 git for-each-ref --sort=committerdate \
-    --format="%1B[0;34m%(authordate:iso8601)%1B[m %1B[0;32m%(refname:short)%1B[m  %(subject)" "${REFS}"
+    --format="%1B[0;34m%(authordate:iso8601)%1B[m %1B[0;32m%(refname:short)${TRACKING}%1B[m  %(subject)" ${REFS}
