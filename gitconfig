@@ -342,6 +342,10 @@
     #shell = !sh -c $0
     #shell = showvirtualenv systempkgtest -c 'bash'
 
+    # find what commit a file was added
+    # usage: `git whatadded --foo.c`
+    whatadded = log --follow --diff-filter=A --find-renames=40%
+
 # show a specifc version of a file
 # git show rev:filename
 
