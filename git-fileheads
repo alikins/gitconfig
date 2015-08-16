@@ -1,0 +1,14 @@
+#!/bin/bash
+
+
+# show a list of last change in each branch of a given path
+# roly poly fileheads
+for C in $(git for-each-ref --sort=committerdate refs/heads --format="%(refname:short)")
+do
+    #git show -s --pretty=format:"%Cgreen%ci %Cblue%cr%Creset  $C" "$C" --
+    git --no-pager log  --pretty=format:"%nRef: %d%ncommit %H%nAuthor: %an%nDate: %ad%n%n%B%n" --stat -1 $C -- "$1"
+    # %>|(<N>)
+    echo
+done
+
+
