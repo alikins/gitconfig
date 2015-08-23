@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+# Show a colorful list of git branches sorted by last commit date.
+#
+# Think of it as the 'ls -lart' of 'git branch'
+#
+# Adrian Likins <adrian@likins.com>
+#
+# https://github.com/alikins/gitconfig
+#
+# License: GPLv2
+
+
+# default:relative, :short, :local, :iso8601, :rfc2822 or :raw to the end of the fieldname; e.g.
+#        %(taggerdate:relative).
+# %(upstream:short)
+#
+usage () {
+    echo "git-brage [-v|--verbose] [extra for-each-ref options]"
+}
+
+TRACKING=${TRACKING:-}
+REFS=
+OTHER_OPTS=
+REFS=${REFS:-refs/heads}
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -v | --verbose )
+            TRACKING="-> %(upstream:short)"
+            ;;
+        -h | --help )
+            usage
+            exit
+           ;;
+        -a | --all)
+            REFS=
+           ;;
+        -r | --remote)
+            REFS=refs/remotes
+           ;;
+    esac
+    shift
+done
+
+
+
+git for-each-ref --sort=committerdate \
+    --format="%1B[0;34m%(authordate:iso8601)%1B[m %1B[0;32m%(refname:short)${TRACKING}%1B[m  %(subject)" ${REFS}
