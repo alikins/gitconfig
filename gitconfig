@@ -101,20 +101,20 @@
 
     # commits not pushed to $1, master by default
     unpushed = cherry -v
-    
+
     # what branch contains the sha
     contains = branch --contains
-    
+
     # show a list of tags sorted by when they were tagged
     tagage = !sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'
 
     # show a list of tags sorted by `sort` version compare (ie, more or less rpmvercmp)
     tagsort = !sh -c 'git tag -l $1 | sort --version-sort'
-    
+
     # https://github.com/prabirshrestha/ProfilesAndSettings/blob/master/.gitconfig
     # show tags and any tag annotation (tito adds tag annotations for example)
     tags = tag -n1 -l
-    
+
     # url of origin, about 99% of what I use git config --list for
     cloneurl = config --get remote.origin.url
 
@@ -158,10 +158,10 @@
     whatrelease = name-rev --name-only
 
 
-    #from http://serverfault.com/questions/175052/how-to-tell-which-local-branch-is-tracking-which-remote-branch-in-git
+    # from http://serverfault.com/questions/175052/how-to-tell-which-local-branch-is-tracking-which-remote-branch-in-git
     upstream = rev-parse --symbolic-full-name --abbrev-ref HEAD@{upstream}
 
-    #also from http://serverfault.com/questions/175052/how-to-tell-which-local-branch-is-tracking-which-remote-branch-in-git
+    # also from http://serverfault.com/questions/175052/how-to-tell-which-local-branch-is-tracking-which-remote-branch-in-git
     tbranch = branch -vv
 
     # what got pushed to master in the last hour
@@ -182,7 +182,7 @@
     find = "!f() { (git branch -a ; git ls-files) | grep $1; GIT_PAGER=cat git grep $1; }; f"
 
     # show what tag/release a bug was part of
-    #bugrelease = "!sh -c 'git name-rev --tags --name-only  $(git log --grep ^$1: --pretty=\"format:%H\"\n")' -
+    # bugrelease = "!sh -c 'git name-rev --tags --name-only  $(git log --grep ^$1: --pretty=\"format:%H\"\n")' -
 
     # from https://gist.github.com/492227
     lost = "!git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset %f' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
@@ -192,7 +192,7 @@
 
     # show a list of branches sorted by time of last commit.
     # This is in a seperate script now.
-    #brage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done; }; g "
+    # brage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done; }; g "
 
     # show remote branches as well
     brageall = !git brage refs/remotes
@@ -208,16 +208,15 @@
 
     # show a list of last change in each branch of a given path
     # roly poly fileheads
-    #fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git --no-pager log  -p -1 $C -- $0; echo; done'"
+    # fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git --no-pager log  -p -1 $C -- $0; echo; done'"
 
-#    yesterday = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do echo git --no-pager log --since=yesterday -p -1 $C -- $0; done'"
-    
+    # yesterday = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do echo git --no-pager log --since=yesterday -p -1 $C -- $0; done'"
+
     # not useful itself, but handy to remember for use in scripts
     thisbranch = rev-parse --abbrev-ref HEAD
 
     # remove a file from index
     unadd = git reset HEAD
-
 
     # needs python-bugzilla, and git-showbugs
     openbugs = showbugs -s NEW,ASSIGNED,NEEDINFO,FAILS_QA,REOPENED,ON_DEV
@@ -252,17 +251,13 @@
     purge = !git branch -d $(git branch --merged master | grep -v -e '*' -e 'master')
 
     # mostly from http://stackoverflow.com/questions/67699/how-do-i-clone-all-remote-branches-with-git
-    #binge = "!sh -c 'for BRANCH in $(git branch -a | sed -n \"\=/HEAD$=d; \=/master$=d;s=  remotes/==p\") ; do branch --track ${BRANCH##*/} $BRANCH ; done' "
-
+    # binge = "!sh -c 'for BRANCH in $(git branch -a | sed -n \"\=/HEAD$=d; \=/master$=d;s=  remotes/==p\") ; do branch --track ${BRANCH##*/} $BRANCH ; done' "
     # uh, don't do this. list authors by numbers of commits. probably needs a .mailmap
     churners = shortlog -sn --
-    # this does the same thing, except slower...
-    #churners = !"git log -M -C  --no-color --format=\"%aN\" | sort | uniq -c | sort -n"
-
 
     # burners: who last touched the most code according to annotate  see git-burners
     # alias implementation just for reference
-    #burners = "!f() { for i in $(git ls-files) ; do git annotate -e $i ; done }; g() { f | awk '{print $2 }' | perl -pe 's/\\(\\<(.+@.+)\\>/\\1/' ; }; g"
+    # burners = "!f() { for i in $(git ls-files) ; do git annotate -e $i ; done }; g() { f | awk '{print $2 }' | perl -pe 's/\\(\\<(.+@.+)\\>/\\1/' ; }; g"
     #
     # yeah, don't do this either. list authors by # of bug id's fixed
     # I suppose the really mad could make "breakers" that figures out who commits code
@@ -276,8 +271,8 @@
     lsg = ls-github
 
     # show which python classes have had the most commits
-    # external script
-    #buggyclasses = "!f() { git log -M -C -p  | pcregrep -o  \"@@.*@@\\sclass\\s(.*)\\(.*\\)\"  | cut -f5 -d\'@\' | sort | uniq -c | sort -n;}; f"
+    # external script now
+    # buggyclasses = "!f() { git log -M -C -p  | pcregrep -o  \"@@.*@@\\sclass\\s(.*)\\(.*\\)\"  | cut -f5 -d\'@\' | sort | uniq -c | sort -n;}; f"
 
     # ignore local changes to a  file
     ignore = update-index --assume-unchanged
@@ -292,7 +287,6 @@
     #  if on master, "git merged topic" will tell you if topic
     #  has been merged
     merged = !sh -c 'git rev-list HEAD | grep $(git rev-parse $0)'
-
 
     # https://github.com/aspiers/git-config/blob/master/bin/git-cdup
     # could be useful for scripts
@@ -322,7 +316,7 @@
     # http://superuser.com/a/169696
     # prettier than my version of this
     #  doesn't really work, should probably use git for-each-ref 
-    #heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
+    # heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
 
     pconfig = config -f .git/config
 
@@ -336,11 +330,11 @@
     branchdiff = "!f() { head=${1:-HEAD} ; ancestor=`git oldest-ancestor master $head` ; git diff $ancestor..$head ; }; f"
     visual-branchdiff = "!f() { head=${1:-HEAD} ; ancestor=`git oldest-ancestor master $head` ; git diff --name-only $ancestor..$head | xargs diffuse -s -r $ancestor ; }; f &"
 
-    #root = !pwd
-    #shell = !$1
-    #shell = !$0
-    #shell = !sh -c $0
-    #shell = showvirtualenv systempkgtest -c 'bash'
+    # root = !pwd
+    # shell = !$1
+    # shell = !$0
+    # shell = !sh -c $0
+    # shell = showvirtualenv systempkgtest -c 'bash'
 
     # find what commit a file was added
     # usage: `git whatadded --foo.c`
