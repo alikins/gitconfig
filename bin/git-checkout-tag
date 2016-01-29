@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+# checkout a tag "FOO-1-0" into a branch called "FOO-1-0-branch"
+
+checkout-tag() 
+{
+    tagname="${1:-}"
+    if [[ "${tagname}" ]] ; then
+        branchname="${tagname}"-branch
+        git checkout -b "${branchname}" "${tagname}"
+    fi
+}
+
+checkout-tag "$@"

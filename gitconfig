@@ -52,8 +52,8 @@
     command = true
 
 
-[diff "podiff"]
-    #textconv = /usr/bin/podiff -t
+#[diff "podiff"]
+#    textconv = /usr/bin/podiff -t
     #command = /usr/bin/podiff -D-u -L
 
 #
@@ -345,6 +345,9 @@
     # find what commit a file was added
     # usage: `git whatadded --foo.c`
     whatadded = log --follow --diff-filter=A --find-renames=40%
+
+    # checkout a tag into a branch
+    checkout-tag = "!f() { tagname=${1}; branchname='${tagname}-branch'; git checkout -b '${branchname}' '${tagname}'; } ; f"
 
 # show a specifc version of a file
 # git show rev:filename
