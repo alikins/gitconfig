@@ -1,2 +1,9 @@
 #!/bin/bash
-git log -M -C -p --grep="^[[:digit:]]\\+:" $* | pcregrep -o  "@@.*@@\sclass\s(.*)\(.*\)"  | cut -f5 -d'@' | sort | uniq -c | sort -n
+
+# For tito style commit messages:
+# 123456: Fix blah foo for zapTupTup factory
+# git log -M -C -p --grep="^[[:digit:]]\\+:" $* | pcregrep -o  "@@.*@@\sclass\s(.*)\(.*\)"  | cut -f5 -d'@' | sort | uniq -c | sort -n
+
+# For ansible style commit messages
+# Fixes #12345  or Fix #323
+git log -M -C -p --grep="issues/[[:digit:]]\\+\|fixes\s+#[[:digit:]]\\+\|[fF]ix" $* |cut -c '1-1000' |  pcregrep -o  "@@.*@@\sclass\s(.*)\(.*\)"  | cut -f5 -d'@' | sort | uniq -c | sort -n
