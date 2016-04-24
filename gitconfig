@@ -3,15 +3,17 @@
     path = ~/.gitconfig-local
 
 [color]
-    diff = auto
-    status = auto
-    branch = auto
-    interactive = auto
+    #diff = auto
+    #status = auto
+    #branch = auto
+    #interactive = auto
     ui = auto
 
 [merge]
     #tool = meld
     tool = diffuse
+	conflictstyle = diff3
+    log = true
 
 [status]
     relativePaths = true
@@ -23,8 +25,11 @@
 [diff]
    tool = diffuse
    suppressBlankEmpty = true
-   mnemonicprefix = true
-   #noprefix = true
+   # mnemonicPrefix = true
+   noprefix = true
+
+[column]
+    ui = auto
 
 # convert po files to a less noisy
 # # variant for display in git log -p etc
@@ -41,6 +46,12 @@
     # just match a blank line so it's empty
     xfuncname = ^$
     cachetextconv = true
+
+[diff "epydoc"]
+    #textconv = epyparse
+    xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
+    textconv = epyparse-nocolor
+    #cachetextconf = true
 
 # from http://stackoverflow.com/questions/2006351/gettext-po-files-under-version-control/11291001#11291001
 # more verbose than my minimal version
@@ -59,8 +70,12 @@
 #
 # custom python xfuncname from
 # https://github.com/cofi/dotfiles/blob/master/gitconfig
-#[diff "python"]
-#    xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
+[diff "python"]
+    xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
+
+[mergetool]
+    keepBackup = false
+    writeToTemp = true
 
 [mergetool "vimdiff3"]
    cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
