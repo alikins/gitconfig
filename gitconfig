@@ -133,6 +133,10 @@
     # url of origin, about 99% of what I use git config --list for
     cloneurl = config --get remote.origin.url
 
+    # for ansible, with its submodules
+    #ap = "!f() { git pull ; git submodule update --recursive } `f`"
+    ap = "!f() { git pull; git submodule update --recursive; } ; f"
+
     l = log --no-merges
 
     # shotcuts

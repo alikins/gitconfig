@@ -1,0 +1,6 @@
+#!/bin/bash
+PR=$1
+PR_BRANCH="pr-${PR}"
+git fetch origin "pull/${PR}/head:${PR_BRANCH}"
+git checkout "${PR_BRANCH}"
+
