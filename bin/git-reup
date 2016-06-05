@@ -1,0 +1,11 @@
+#! /bin/sh
+# Shows log and diffstat of pulled commits (using rebase)
+#
+# From https://github.com/cofi/dotfiles
+# Author: Michael Markert <markert.michael@googlemail.com>
+#
+
+HEAD=$(git rev-parse HEAD)
+git pull --rebase "$@"
+git --no-pager diff --color --stat $HEAD..
+git log --pretty=format:"%Cred%ae %Creset- %C(yellow)%s %Creset(%ar)" $HEAD..
