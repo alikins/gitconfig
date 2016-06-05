@@ -13,7 +13,8 @@
     #tool = meld
     tool = diffuse
 	conflictstyle = diff3
-    log = true
+    #log = true
+    branchdesc = true
 
 [status]
     relativePaths = true
@@ -161,6 +162,8 @@
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
     ll = log --graph --date=short
+    # from git-extras https://github.com/tj/git-extras/blob/master/bin/git-show-tree
+    show-tree = log --all --graph --decorate --oneline --simplify-by-decoration
 
     # from https://git.wiki.kernel.org/index.php/Aliases
     #whois = !sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\\" --author=\"$1\"' -
@@ -369,3 +372,7 @@
 # GIT_SSH for debug ssh stuff (needs to point to
 # a wrapper script to add args, aka "ssh -v $*" in a shell script)
 
+[filter "lfs"]
+	smudge = git-lfs smudge %f
+	required = true
+	clean = git-lfs clean %f
