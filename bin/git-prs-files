@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# git --no-pager diff --name-only $PR_HEAD $(git merge-base $PR_HEAD devel)
+#git rev-list HEAD | grep $(git rev-parse $0)
+# git branch --merged master
+
+# show all the branches that reference a file
+# git --no-pager log --format=%D --all -- lib/ansible/playbook/block.py| grep -v "^$"
+
+git for-each-ref refs/remotes/origin/pr/ --format="%(refname:short)" --sort=version:refname | while read PR_HEAD ;
+do
+   git branch --merged devel $PR_HEAD
+   git --no-pager diff --name-only $PR_HEAD $(git merge-base $PR_HEAD devel) | while read PR_FILENAME;
+   
+   do
+       printf "%s: %s\n" $PR_HEAD $PR_FILENAME
+   done
+   echo
+done

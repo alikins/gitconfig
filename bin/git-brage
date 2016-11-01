@@ -20,9 +20,9 @@ usage () {
 }
 
 TRACKING=${TRACKING:-}
-REFS=
 OTHER_OPTS=
 REFS=${REFS:-refs/heads}
+MODE='default'
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -35,14 +35,28 @@ while [ "$1" != "" ]; do
            ;;
         -a | --all)
             REFS=
+            MODE='all'
            ;;
         -r | --remote)
             REFS=refs/remotes
+            MODE='remote'
            ;;
+        *)
+          case $MODE in
+              default)
+                # REFS="${REFS}"
+                ;;
+              remote)
+                REFS="${REFS}/${1}/*"
+                ;;
+              all)
+                #REFS="refs/${1}*"
+                ;;
+          esac
+          ;;
     esac
     shift
 done
-
 
 
 git for-each-ref --sort=committerdate \
