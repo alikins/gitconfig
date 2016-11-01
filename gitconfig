@@ -28,6 +28,9 @@
    # mnemonicPrefix = true
    noprefix = true
 
+[status]
+    submodulesummary = true
+
 [column]
     ui = auto
 
@@ -109,6 +112,9 @@
   added = yellow
   changed = green
   untracked = cyan
+
+[tig]
+    main-options = --follow
 
 [alias]
     # Mostly in order they were added, except my most heavily
@@ -229,8 +235,9 @@
     # roly poly fileheads
     # fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git --no-pager log  -p -1 $C -- $0; echo; done'"
 
-    # yesterday = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do echo git --no-pager log --since=yesterday -p -1 $C -- $0; done'"
+    yesterday = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git --no-pager log --since=yesterday -p -1 $C -- $0; done'"
 
+    thisweek = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git --no-pager log --since=monday -p -1 $C -- $0; done'"
     # not useful itself, but handy to remember for use in scripts
     thisbranch = rev-parse --abbrev-ref HEAD
 
@@ -346,7 +353,7 @@
 
     # from https://gist.github.com/awood/11189030
     oldest-ancestor = !bash -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -
-    branchdiff = "!f() { head=${1:-HEAD} ; ancestor=`git oldest-ancestor master $head` ; git diff $ancestor..$head ; }; f"
+    branchdiff = "!f() { head=${2:-HEAD} ; ancestor=`git oldest-ancestor $1 $head` ; git diff $ancestor..$head ; }; f"
     visual-branchdiff = "!f() { head=${1:-HEAD} ; ancestor=`git oldest-ancestor master $head` ; git diff --name-only $ancestor..$head | xargs diffuse -s -r $ancestor ; }; f &"
 
     # root = !pwd
