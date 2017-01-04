@@ -6,4 +6,7 @@
 
 # For ansible style commit messages
 # Fixes #12345  or Fix #323
-git log -M -C -p --grep="issues/[[:digit:]]\\+\|fixes\s+#[[:digit:]]\\+\|[fF]ix" $* |cut -c '1-1000' |  pcregrep -o  "@@.*@@\sclass\s(.*)\(.*\)"  | cut -f5 -d'@' | sort | uniq -c | sort -n
+#git log -M -C -p --grep="issues/[[:digit:]]\\+\|fixes\s+#[[:digit:]]\\+\|[fF]ix" $* |cut -c '1-1000' |  pcregrep -o  "@@.*@@\sclass\s(.*)\(.*\)"  | cut -f5 -d'@' | sort | uniq -c | sort -n
+#git log -M -C -C -C -p --grep="issues/[[:digit:]]\\+\|fixes\s+#[[:digit:]]\\+\|[fF]ix" $* |cut -c '1-1000' | pcregrep -o  "@@.*@@\sdef\s(.*)\(.*\)|@@.*@@\sclass\s(.*)\(.*\)" | cut -f5 -d'@' | sort | uniq -c | sort -n
+fixes="issues/[[:digit:]]\\+\|fixes\s+#[[:digit:]]\\+\|[fF]ix"
+git log -M -C -C -C -p --grep="${fixes}" $* |cut -c '1-1000' | diff_file_funcname.py | sort | uniq -c | sort -n
