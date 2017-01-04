@@ -26,8 +26,9 @@
 [diff]
    tool = diffuse
    suppressBlankEmpty = true
-   # mnemonicPrefix = true
+   mnemonicPrefix = true
    noprefix = true
+   renameLimit = 2500
 
 [status]
     submodulesummary = true
@@ -75,7 +76,7 @@
 # custom python xfuncname from
 # https://github.com/cofi/dotfiles/blob/master/gitconfig
 [diff "python"]
-    xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
+#    xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
 
 [mergetool]
     keepBackup = false
@@ -178,6 +179,11 @@
 
     # ignore po files in "git log", sorry translators ;-<
     slog = !sh -c 'git log --no-merges $1 `ls | grep -v ^po`' -
+
+    # ignore commits in lib/ansible/modules
+    #alog = !sh -c 'git log $1 `git ls-files | grep -v lib/ansible/modules/`'
+    alog = "!f() { (git log $* $(git ls-files | grep -v lib/ansible/modules/) ) }; f"
+    find = "!f() { (git branch -a ; git ls-files) | grep $1; GIT_PAGER=cat git grep $1; }; f"
 
     # typo
     rbanch = branch
