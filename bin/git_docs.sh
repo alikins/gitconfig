@@ -28,11 +28,19 @@ shift
 DOCS_DIR=$1
 shift
 
+# versions to compare
+END=$1
+shift
+
+START=$1
+shift
+
 # subdirs where to find *.py where to find the code we are generating docs from
 PYDIRS="$*"
 
+EXCLUDES="lib/ansible/modules/"
 gen_docs() {
-    for py in $(git ls-files ${PYDIRS} | grep .py$);
+    for py in $(git ls-files -x ${EXCLUDES} ${PYDIRS} | grep .py$);
     do
         echo "$py"
 
@@ -55,6 +63,8 @@ SRCDIR="/home/adrian/src/doctest/subscription-manager"
 #for tag in $(cat tags.txt);
 TAGS=$(git tag -l | sort --version-sort | grep -v "^-")
 TAGS="$TAGS master"
+
+TAGS="$START $END"
 for tag in $TAGS
 do
     echo "$tag"; 
