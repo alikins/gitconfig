@@ -4,5 +4,5 @@ PR_BRANCH="pr-${PR}"
 REMOTE_REF="pull/${PR}/head"
 git fetch origin "pull/${PR}/head:${PR_BRANCH}"
 #git fetch origin "${REMOTE_REF}"
-git checkout  "${PR_BRANCH}"
+git checkout "${PR_BRANCH}"
 
