@@ -2,6 +2,11 @@
 [include]
     path = ~/.gitconfig-local
 
+[core]
+    # pager = "diff-so-fancy | less --tabs=4 -RFX"
+    #pager = "diff-highlight | less --tabs=4 -RFX"
+
+
 [color]
     #diff = auto
     #status = auto
@@ -25,10 +30,13 @@
 
 [diff]
    tool = diffuse
-   suppressBlankEmpty = true
-   mnemonicPrefix = true
+   #suppressBlankEmpty = true
+   #mnemonicPrefix = true
    noprefix = true
    renameLimit = 2500
+
+[commit]
+    verbose = true
 
 [status]
     submodulesummary = true
@@ -244,7 +252,7 @@
     # roly poly fileheads
     # fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git --no-pager log  -p -1 $C -- $0; echo; done'"
 
-    yesterday = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git --no-pager log --since=yesterday -p -1 $C -- $0; done'"
+    #yesterday = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git --no-pager log --since=yesterday -p -1 $C -- $0; done'"
 
     thisweek = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git --no-pager log --since=monday -p -1 $C -- $0; done'"
     # not useful itself, but handy to remember for use in scripts
@@ -378,6 +386,9 @@
     # checkout a tag into a branch
     checkout-tag = "!f() { tagname=${1}; branchname='${tagname}-branch'; git checkout -b '${branchname}' '${tagname}'; } ; f"
 
+    # from http://andrewberls.com/blog/post/git-tricks-unstaging-files
+    # unstage a particular file
+	unstage = reset --
 # show a specifc version of a file
 # git show rev:filename
 
