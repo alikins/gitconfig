@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#    buggyfiles = "!git log -M -C --format=\"format:%n\" --grep=\"^[[:digit:]]\\+:\" --name-only | grep .  | sort | uniq -c | sort -n"
+
+#git log -M -C --format="format:%n" --grep="issues/[[:digit:]]\\+\|fixes\s+#[[:digit:]]\\+\|[fF]ix"
+vaugue_fix="issues/[[:digit:]]\\+\|fixes\s+#[[:digit:]]\\+\|[fF]ix"
+fixes="issues/[[:digit:]]\\+\|fixes\s+#[[:digit:]]\\+"
+# git log -M -C --grep='Fix[(?:es)]\s\?'  -- playbook/| grep -i fix
+fixes='Fix[(?:es)]\s\?'
+git --no-pager log -M -C -C -C --grep="${fixes}" --name-only --format="format:" $* | grep . | sort | uniq -c | sort -n
