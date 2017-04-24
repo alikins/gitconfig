@@ -1,0 +1,33 @@
+#!/bin/bash 
+
+# try to find commits in $2 that are not in $1
+# for example "git checkcommits  master feature" should show you any commits into
+# feature that didn't make it into master
+# ignoring bugzilla id's and tito build commits
+
+branch_1=$1
+shift
+branch_2=$1
+shift
+log_opts=
+log_options=$*
+if [ ! -z "$log_options" ] ; then
+    log_opts=$log_options
+fi
+commits=$(git --no-pager rev-list $branch_1..$branch_2)
+
+for commit in $commits
+do
+    match=""
+    msg=""
+    # ignore tito and merge commits                                                      # maybe a little too broad
+    msg=$(git --no-pager log --pretty=format:"%s%n" -n1 $commit | grep -v Merge| grep -v "submodule" | grep -v "New release"| grep -vi "CHANGELOG")
+
+    # check non fluff commits to see if they are in branch1's log
+    match=$(git --no-pager log --oneline -n1 -F --grep="$msg" "$branch_1")
+
+    if [ -z "$match" ] ; then
+        #git --no-pager log --oneline -n1 $log_opts "$commit"
+        git --no-pager log -n1 $log_opts "$commit"
+    fi
+done

@@ -1,0 +1,118 @@
+#!/bin/bash
+
+usage() {
+    print "show-bugs [-w|--web] [-e|--errata] [-s|--status] bug_status log_options "
+}
+
+web=
+status=
+status_query=
+log_opts=
+while [ "$1" != "" ]; do
+    case $1 in
+        -s | --status )
+            shift
+            status=$1
+            ;;
+        -w | --web )
+            web=1
+            ;;
+        -h | --help )
+            usage
+            exit
+            ;;
+        -e | --errata )
+            errata=1
+            ;;
+        * )
+            log_opts="${log_opts} ${1}"
+            shift;
+            ;;
+    esac
+    shift
+done
+
+if [ -n "$status" ] ; then
+    status_query="--bug_status=${status}"
+fi
+
+# echo  "git log --format="format:%s" --grep "^[[:digit:]]\\+:"  $log_opts | awk -F":" '{print $1 }'"
+buglist() {
+# support bug slug formats
+# 12345: sdfasd
+# 123456 - sdfasdf
+# Bug 3423423 - sdfasd
+# 123124-ssdfsdf
+# these log regexes are mostly just to weed out some volume,
+# we still basically search for 5+ digit numbers
+#for bug in $(git log --format="format:%s%b"  \
+#            --grep="Fixes.*\#[[:digit:]]"
+#            HEAD...273a965dcc1e522fcd6637c63be0157a17cff421 \
+#            | grep -E -o "[[:digit:]]{3,}")
+
+for fixing_commit in $(git log --format="format:%H" --grep="Fixes.*\#[[:digit:]]" HEAD...v2.1.0.0-1)
+do
+    echo -e "\n"
+    summary=$(git log -1 --format="format:%s" "$fixing_commit")
+    body=$(git log -1  --format="format:%b" "$fixing_commit")
+    issue_ids=$(echo "$summary" "$body" | grep -E -o "[[:digit:]]{3,}")
+    echo "Commit: [$fixing_commit](https://github.com/ansible/ansible-modules-extras/commit/$fixing_commit)"
+    for issue_id in $issue_ids
+    do
+        echo "* [$issue_id](https://github.com/ansible/ansible-modules-extras/issues/$issue_id): $summary"
+    done
+    #echo "$body"
+    echo
+    #echo "Commit: [$fixing_commit](https://github.com/ansible/ansible/commit/$fixing_commit)"
+    echo '```'
+    echo "$summary"
+    echo
+    echo "$body"
+    echo '```'
+    echo '***'
+done
+#for bug in $(git log --format="format:%s%b" --grep="Fixes.*\#[[:digit:]]" HEAD...v2.1.0.0-1| grep -E -o "[[:digit:]]{3,}")
+#do
+#    echo -n "$bug "
+#done
+};
+
+
+buglist_raw() {
+    (IFS=,;set -- $(echo "$1") ;echo $*)
+}
+
+URL_OPEN="open"
+open_browser_show_issues()
+{
+    echo $1
+    #for issue in $bugs
+    #do
+    #    #$URL_OPEN "https://github.com/ansible/ansible/issues/$issue"
+    #    echo "https://github.com/ansible/ansible/issues/$issue"
+    #done
+        #$URL_OPEN "https://github.com/ansible/ansible/issues?q=is%3Aissue+$bugs"
+#    xdg-open "https://bugzilla.redhat.com/buglist.cgi?bug_id=$1;bug_status=$2" ;
+};
+
+
+bugs=$(buglist)
+
+#echo "$(buglist)"
+#echo "$(buglist_raw $bugs)"
+#echo "$bugs"
+
+if [ -z "$bugs" ] ; then
+    exit
+fi
+
+if [ "$web" == "1" ] ; then
+    echo "$bugs"
+    #open_browser_show_issues "$bugs"
+    #open_browser "$bugs" "$status" > /dev/null 2>&1
+elif [ "$errata" == "1" ] ; then
+    echo $(buglist_raw "$bugs")
+else
+    echo $(buglist)
+    #bugzilla query ${status_query} -b $(buglist)
+fi
