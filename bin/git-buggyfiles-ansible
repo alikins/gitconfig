@@ -7,4 +7,4 @@ vaugue_fix="issues/[[:digit:]]\\+\|fixes\s+#[[:digit:]]\\+\|[fF]ix"
 fixes="issues/[[:digit:]]\\+\|fixes\s+#[[:digit:]]\\+"
 # git log -M -C --grep='Fix[(?:es)]\s\?'  -- playbook/| grep -i fix
 fixes='Fix[(?:es)]\s\?'
-git --no-pager log -M -C -C -C --grep="${fixes}" --name-only --format="format:" $* | grep . | sort | uniq -c | sort -n
+git --no-pager log -M -C -C -C --grep="${vague_fix}" --name-only --format="format:" $* | grep . | sort | uniq -c | sort -n

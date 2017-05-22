@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#git show --name-only --oneline 4c3c294a030d7b429817f662e48efba92dfd34db
+COMMITS=$(git log --oneline | awk '{print $1}')
+for COMMIT in $COMMITS; do
+    #echo $COMMIT
+    FILES=$(git show --name-only --oneline $COMMIT| egrep -v ^$COMMIT)
+    for FILE in $FILES; do
+        echo "$COMMIT:$FILE"
+    done
+done

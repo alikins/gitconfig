@@ -1,0 +1,2 @@
+#!/bin/bash
+git diff  devel... --numstat | cut -f3| grep .py
