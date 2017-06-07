@@ -18,7 +18,7 @@
     #tool = meld
     tool = diffuse
 	conflictstyle = diff3
-    #log = true
+    log = true
     branchdesc = true
 
 [status]
