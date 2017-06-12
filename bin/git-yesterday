@@ -4,5 +4,5 @@ N_MOST_RECENT_BRANCHES=30
 
 for branch in $(git --no-pager for-each-ref --sort=committerdate refs/heads --format="%(refname:short)"| tail -n "${N_MOST_RECENT_BRANCHES}") ;
 do
-    git --no-pager log --since=yesterday --decorate -p "${branch}" --
+    git --no-pager log --since=yesterday --decorate -p "$@" "${branch}" --
 done
