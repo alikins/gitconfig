@@ -86,6 +86,11 @@
 [diff "python"]
 #    xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
 
+[filter "lfs"]
+	smudge = git-lfs smudge %f
+	required = true
+	clean = git-lfs clean %f
+
 [mergetool]
     keepBackup = false
     writeToTemp = true
@@ -358,7 +363,7 @@
 
     # http://superuser.com/a/169696
     # prettier than my version of this
-    #  doesn't really work, should probably use git for-each-ref 
+    #  doesn't really work, should probably use git for-each-ref
     # heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
 
     pconfig = config -f .git/config
@@ -389,6 +394,8 @@
     # from http://andrewberls.com/blog/post/git-tricks-unstaging-files
     # unstage a particular file
 	unstage = reset --
+
+# Misc notes
 # show a specifc version of a file
 # git show rev:filename
 
@@ -396,7 +403,10 @@
 # GIT_SSH for debug ssh stuff (needs to point to
 # a wrapper script to add args, aka "ssh -v $*" in a shell script)
 
-[filter "lfs"]
-	smudge = git-lfs smudge %f
-	required = true
-	clean = git-lfs clean %f
+# From https://about.gitlab.com/2015/02/19/8-tips-to-help-you-work-better-with-git/
+# useful stuff for tracking annotation/blame/attribution
+# $ git blame -w  # ignores white space
+# $ git blame -M  # ignores moving text
+# $ git blame -C  # ignores moving text into other files
+# -C -M take a number arg for number of lines to consider.
+# -C -C -C will also try to find moves between any commits
