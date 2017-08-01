@@ -1,4 +1,12 @@
 #!/bin/bash
+
+# git prs $PRNUMBER
+# will fetch the pr branch from origin (github) and
+# checkout a local branch named 'pr-$PRNUMBER'
+#
+# TODO: doesn't handle force pushed branch updates well
+#       (easiest is to 'git branch -D pr-$PRNUMBER' and
+#        'git prs $PRNUMBER' again)
 PR=$1
 PR_BRANCH="pr-${PR}"
 REMOTE_REF="pull/${PR}/head"
