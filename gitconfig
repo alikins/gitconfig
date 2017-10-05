@@ -182,8 +182,17 @@
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
     ll = log --graph --date=short
+
+    # useful log options
+    # --source
+    logmine = log  --graph --decorate --oneline --branches --not --remotes=alikins
+    logdev = log  --graph --decorate --oneline --branches --not --remotes=origin
+    # log of local branches that are not also at origin
+    # locallog = log --decorate --branches --not --remotes=origin
+    # log of local branches that are not also at origin
+    locallog = log --decorate --abbrev-commit --branches --not --remotes=alikins
     # from git-extras https://github.com/tj/git-extras/blob/master/bin/git-show-tree
-    show-tree = log --all --graph --decorate --oneline --simplify-by-decoration
+    show-tree = log --graph --decorate --oneline --simplify-by-decoration --all
 
     # from https://git.wiki.kernel.org/index.php/Aliases
     #whois = !sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\\" --author=\"$1\"' -
@@ -342,7 +351,11 @@
 
     # https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
     # Show the date of the first commit
+    # (I can never remember the name of this alias, so multiple aliases...)
     log-first-date = !git log --date-order --date=iso --pretty=\"format:%ad\" --reverse | head -1
+    first-commit = !git log-first-date
+    oldest-commit = !git log-first-date
+    repo-age = !git log-first-date
 
     # https://github.com/SixArm/sixarm_git_gitconfig/blob/master/gitconfig-alias.txt
     # Editing and adding conflicted files: when we get many merge conflicts
