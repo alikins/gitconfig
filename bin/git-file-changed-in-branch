@@ -1,0 +1,8 @@
+#!/bin/bash
+
+AUTHOR="Adrian Likins <alikins@redhat.com>"
+
+git log --follow --author-date-order --pretty=format:"%D" \
+    --author="${AUTHOR}" \
+    --all -- "$@" \
+    | awk -F', ' -e '{for(i=1;i<=NF;i++) print $i}'| sort | uniq
