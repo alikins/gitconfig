@@ -1,6 +1,3 @@
-# local user config, usernames, etc
-[include]
-    path = ~/.gitconfig-local
 
 [core]
     # pager = "diff-so-fancy | less --tabs=4 -RFX"
@@ -32,7 +29,7 @@
    tool = diffuse
    #suppressBlankEmpty = true
    #mnemonicPrefix = true
-   noprefix = true
+   # noprefix = true
    renameLimit = 2500
 
 [commit]
@@ -285,6 +282,7 @@
     buggyfiles = "!git log -M -C --format=\"format:%n\" --grep=\"^[[:digit:]]\\+:\" --name-only | grep .  | sort | uniq -c | sort -n"
 
     # from https://github.com/cypher/dotfiles/blob/master/gitconfig
+    # See also git check-ignored: git check-ignore -n -v * --no-index
     ls-ignored = ls-files --exclude-standard --ignored --others
 
     # based on "buggyfiles" above and https://github.com/cypher/dotfiles/blob/master/bin/git-churn
@@ -408,6 +406,10 @@
     # unstage a particular file
 	unstage = reset --
 
+# local user config, usernames, etc
+[include]
+    path = ~/.gitconfig-local
+
 # Misc notes
 # show a specifc version of a file
 # git show rev:filename
@@ -423,3 +425,6 @@
 # $ git blame -C  # ignores moving text into other files
 # -C -M take a number arg for number of lines to consider.
 # -C -C -C will also try to find moves between any commits
+#
+# modified submodules
+# git status --porcelain=2 --branch| grep '^.\s[A.][.M]\sS' | awk -e '{print $9}'
