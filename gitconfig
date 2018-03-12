@@ -21,6 +21,7 @@
 [status]
     relativePaths = true
     showUntrackedFiles = no
+    submodulesummary = true
 
 [rerere]
 	enabled = true
@@ -35,11 +36,16 @@
 [commit]
     verbose = true
 
-[status]
-    submodulesummary = true
-
 [column]
     ui = auto
+
+[push]
+   default = tracking
+
+[branch]
+   autosetupmerge = true
+
+[status]
 
 # convert po files to a less noisy
 # # variant for display in git log -p etc
@@ -62,6 +68,10 @@
     xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
     textconv = epyparse-nocolor
     #cachetextconf = true
+
+[diff "svg"]
+    textconf = gsvg
+    cachetextconv = true
 
 # from http://stackoverflow.com/questions/2006351/gettext-po-files-under-version-control/11291001#11291001
 # more verbose than my minimal version
@@ -99,11 +109,6 @@
     cmd = vim \"$MERGED\"
     prompt = false
 
-[push]
-   default = tracking
-
-[branch]
-   autosetupmerge = true
 
 [color "branch"]
   current = yellow reverse
