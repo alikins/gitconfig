@@ -1,2 +1,20 @@
 po/*.po diff=po
 po/*.pot diff=pot
+
+# To use gsvg tool ( https://github.com/noahbrenner/gsvg)
+# for less noisy git diffs
+# Add a 'svg' diff target to gitconfig like:
+#
+# [diff "svg"]
+#    textconv = gsvg
+#
+# And set the diff attr for svg to 'svg' in
+# ~/.config/git/attributes (global), .gitattributes (local but checked in)
+# or .git/info/attributes (repo local but not checked in/shared)
+#
+# *.svg    diff=svg
+
+# But easiest is to just default to treating .svg files as binary.
+# If you want to override when using 'git log -p', use 'git log -p --no-textconv'
+
+*.svg binary
