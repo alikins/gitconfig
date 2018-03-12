@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# add submodules that have been modified but are 'clean'
+# ie, without any 'modified content'
+
+# the porcelain=2 output looks like:
+# 1 .M SC.. 160000 160000 160000 94dcbdf153b821bac2416627cfd04d4501912b5d 94dcbdf153b821bac2416627cfd04d4501912b5d SomeSubModule
+# 1 .M SCM. 160000 160000 160000 79b94500fe1d9c4eb11e38b638a1045b16f003af 79b94500fe1d9c4eb11e38b638a1045b16f003af SomeDirtySubModule
+#
+# We want to grab the '.M SC..' SomeSubModule but not SomeDirtySubModule '.M SCM.' and stage them for commit
+
+git status --porcelain=2 --branch| grep '^.\s[A.][.M]\sS[C\.][\.]' | awk '{print $9}' | xargs git add
