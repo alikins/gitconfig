@@ -21,7 +21,7 @@
 [status]
     relativePaths = true
     showUntrackedFiles = no
-    submodulesummary = true
+    submodulesummary = false
 
 [rerere]
 	enabled = true
@@ -30,7 +30,7 @@
    tool = diffuse
    #suppressBlankEmpty = true
    #mnemonicPrefix = true
-   # noprefix = true
+   noprefix = true
    renameLimit = 2500
 
 [commit]
@@ -129,9 +129,6 @@
   added = yellow
   changed = green
   untracked = cyan
-
-[tig]
-    main-options = --follow
 
 [alias]
     # Mostly in order they were added, except my most heavily
