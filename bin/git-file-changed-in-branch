@@ -5,4 +5,9 @@ AUTHOR="Adrian Likins <alikins@redhat.com>"
 git log --follow --author-date-order --pretty=format:"%D" \
     --author="${AUTHOR}" \
     --all -- "$@" \
-    | awk -F', ' -e '{for(i=1;i<=NF;i++) print $i}'| sort | uniq
+    | awk -F', ' -e '{for(i=1;i<=NF;i++) print $i}' \
+    | grep -v '\->' | sort | uniq
+
+# To show the git diff --stat for each branch
+# | xargs -IBRANCH bash -c 'echo; echo BRANCH; git --no-pager diff  --stat devel...BRANCH'
+# the grep -v ignores the 'HEAD -> whatever' line
