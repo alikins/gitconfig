@@ -116,14 +116,16 @@
   remote = green
 
 [color "diff"]
-  meta = yellow bold
+  # meta = yellow bold
+  # meta = #00 bold
+  meta = #ff0ab3
   frag = magenta
   plain = white bold
   old = red bold
   new = green bold
   commit = yellow bold
   func = green dim
-  #plain = white bold
+  # plain = white bold
 
 [color "status"]
   added = yellow
