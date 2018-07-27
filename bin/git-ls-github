@@ -3,10 +3,11 @@
 # show a list of files, latest commit checksum, and subject of latest commit
 # kind of like the github file view
 
-git ls-files | grep -vF '/' | while read file; do
+git ls-files | grep -vF '/' | while read -r file; do
     IFS='
 '
-    log_msg=( $(git log -n 1 HEAD --format="%Cred$file%Creset%n%Cgreen%cr%Creset%n%Creset%s%Creset%n%Cblue[%aN]%Creset%n" -- "$file") )
+    log_msg=( $(git log -n 1 HEAD --format="$file%n%cr%n%s%n%[%aN]%n" -- "$file") )
     unset IFS
-    printf "%-30.30s %-21s %s %s\n" "${log_msg[0]}" "${log_msg[1]}" "${log_msg[2]}" "${log_msg[3]}"
+    # lightblue:"\e[1;34m" reset:"\e[0m" medgray:"\e[1;30m"
+    printf "%b%-30.30s%b %b%-21s %s %s%b\\n" "\\e[1;34m" "${log_msg[0]}" "\\e[0m" "\\e[1;30m" "${log_msg[1]}" "${log_msg[2]}" "${log_msg[3]}" "\\e[0m"
 done
