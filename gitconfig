@@ -91,7 +91,7 @@
 # custom python xfuncname from
 # https://github.com/cofi/dotfiles/blob/master/gitconfig
 [diff "python"]
-#    xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
+    xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
 
 [filter "lfs"]
 	smudge = git-lfs smudge %f
@@ -160,6 +160,7 @@
     ap = "!f() { git pull; git submodule update --recursive; } ; f"
 
     l = log --no-merges
+    log = log --no-merges
 
     # shotcuts
     m = checkout master
@@ -410,6 +411,12 @@
     # unstage a particular file
 	unstage = reset --
 
+    # Show latest tag
+    # From https://github.com/GitAlias/gitalias/blob/master/gitalias.txt
+    lasttag = describe --tags --abbrev=0
+    taglast = !git lasttag
+
+    heads = !"git log --color origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
 # local user config, usernames, etc
 [include]
     path = ~/.gitconfig-local
