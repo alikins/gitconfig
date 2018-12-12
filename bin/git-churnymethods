@@ -1,4 +1,6 @@
 #!/bin/bash
 #git log -M -C -p $* | pcregrep -o  "@@.*@@\sclass\s(.*)\(.*\)"  | cut -f5 -d'@' | sort | uniq -c | sort -n
 #git log -M -C -C -C -p $* | cut -c '1-1000'| pcregrep -o  "@@.*@@\sdef\s(.*)\(.*\)|@@.*@@\sclass\s(.*)\(.*\)"  | cut -f5 -d'@' | sort | uniq -c | sort -n
-git log -M -C -C -C -p $* | cut -c '1-1000'| diff_file_funcname.py | sort | uniq -c | sort -n
+
+#git log -M -C -C -C -p $* | cut -c '1-1000'| diff_file_funcname.py | sort | uniq -c | sort -n
+git log -M -C -C -C -p $* | cut -c '1-1000'| diff_file_funcname.py | cut -f5 -d'@' | sort | uniq -c | sort -n
