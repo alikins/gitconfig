@@ -1,18 +1,13 @@
 
 [core]
     # pager = "diff-so-fancy | less --tabs=4 -RFX"
-    #pager = "diff-highlight | less --tabs=4 -RFX"
-
+    # pager = "diff-highlight | less --tabs=4 -RFX"
 
 [color]
-    #diff = auto
-    #status = auto
-    #branch = auto
-    #interactive = auto
     ui = auto
 
 [merge]
-    #tool = meld
+    # tool = meld
     tool = diffuse
 	conflictstyle = diff3
     log = true
@@ -28,10 +23,10 @@
 
 [diff]
    tool = diffuse
-   #suppressBlankEmpty = true
-   #mnemonicPrefix = true
    noprefix = true
    renameLimit = 2500
+   # suppressBlankEmpty = true
+   # mnemonicPrefix = true
 
 [commit]
     verbose = true
@@ -48,9 +43,9 @@
 [status]
 
 # convert po files to a less noisy
-# # variant for display in git log -p etc
-# # note that textconv does not affect
-# # git-format-patch output
+# variant for display in git log -p etc
+# note that textconv does not affect
+# git-format-patch output
 [diff "po"]
     textconv = po_diff
     cachetextconv = true
@@ -64,14 +59,15 @@
     cachetextconv = true
 
 [diff "epydoc"]
-    #textconv = epyparse
+    # textconv = epyparse
     xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
     textconv = epyparse-nocolor
-    #cachetextconf = true
+    # cachetextconv = true
 
-[diff "svg"]
-    textconf = gsvg
-    cachetextconv = true
+# .gitattributes sets svg to 'binary' so no diff is shown
+# [diff "svg"]
+    # textconv = gsvg
+    # cachetextconv = true
 
 # from http://stackoverflow.com/questions/2006351/gettext-po-files-under-version-control/11291001#11291001
 # more verbose than my minimal version
@@ -83,11 +79,10 @@
     command = true
 
 
-#[diff "podiff"]
-#    textconv = /usr/bin/podiff -t
-    #command = /usr/bin/podiff -D-u -L
+# [diff "podiff"]
+    # textconv = /usr/bin/podiff -t
+    # command = /usr/bin/podiff -D-u -L
 
-#
 # custom python xfuncname from
 # https://github.com/cofi/dotfiles/blob/master/gitconfig
 [diff "python"]
@@ -108,7 +103,6 @@
 [difftool "vim"]
     cmd = vim \"$MERGED\"
     prompt = false
-
 
 [color "branch"]
   current = yellow reverse
@@ -156,7 +150,7 @@
     cloneurl = config --get remote.origin.url
 
     # for ansible, with its submodules
-    #ap = "!f() { git pull ; git submodule update --recursive } `f`"
+    # ap = "!f() { git pull ; git submodule update --recursive } `f`"
     ap = "!f() { git pull; git submodule update --recursive; } ; f"
 
     l = log --no-merges
@@ -169,7 +163,7 @@
 
     c = commit -v
     # not a fan of random merges
-    #pull = pull --ff-only
+    # pull = pull --ff-only
 
     # because I always typo git commit --ammend, er, amend
     amend = commit --amend
@@ -197,7 +191,7 @@
     show-tree = log --graph --decorate --oneline --simplify-by-decoration --all
 
     # from https://git.wiki.kernel.org/index.php/Aliases
-    #whois = !sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\\" --author=\"$1\"' -
+    # whois = !sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\\" --author=\"$1\"' -
 
     whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
 
@@ -205,7 +199,7 @@
     slog = !sh -c 'git log --no-merges $1 `ls | grep -v ^po`' -
 
     # ignore commits in lib/ansible/modules
-    #alog = !sh -c 'git log $1 `git ls-files | grep -v lib/ansible/modules/`'
+    # alog = !sh -c 'git log $1 `git ls-files | grep -v lib/ansible/modules/`'
     alog = "!f() { (git log $* $(git ls-files | grep -v lib/ansible/modules/) ) }; f"
     find = "!f() { (git branch -a ; git ls-files) | grep $1; GIT_PAGER=cat git grep $1; }; f"
 
@@ -223,7 +217,7 @@
     tbranch = branch -vv
 
     # what got pushed to master in the last hour
-    #  based on http://stackoverflow.com/questions/3357219/expose-the-date-a-commit-was-pushed-to-a-repository
+    # based on http://stackoverflow.com/questions/3357219/expose-the-date-a-commit-was-pushed-to-a-repository
     justpushed = log origin/master@{\"1 hour ago\"}..origin/master --
 
     # log everything with $1 string in the diff
@@ -236,7 +230,7 @@
     findbug = !sh -c 'git log --grep=^$1:' -
 
     # search for a pattern in branch names, file names, or file contents
-    #find = "!f() { ((git branch -a ; git ls-files) | grep $1); git grep $1 }; f"
+    # find = "!f() { ((git branch -a ; git ls-files) | grep $1); git grep $1 }; f"
     find = "!f() { (git branch -a ; git ls-files) | grep $1; GIT_PAGER=cat git grep $1; }; f"
 
     # show what tag/release a bug was part of
@@ -268,9 +262,10 @@
     # roly poly fileheads
     # fileheads = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; git --no-pager log  -p -1 $C -- $0; echo; done'"
 
-    #yesterday = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git --no-pager log --since=yesterday -p -1 $C -- $0; done'"
+    # yesterday = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git --no-pager log --since=yesterday -p -1 $C -- $0; done'"
 
     thisweek = "!sh  -c 'for C in $(git for-each-ref --sort=committerdate refs/heads --format=\"%(refname:short)\"| tac) ; do git --no-pager log --since=monday -p -1 $C -- $0; done'"
+
     # not useful itself, but handy to remember for use in scripts
     thisbranch = rev-parse --abbrev-ref HEAD
 
