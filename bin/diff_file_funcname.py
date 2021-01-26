@@ -18,10 +18,10 @@ def process(line, filename):
     method_name = ''
     if res:
         method_name = res.group(1)
-        #print method_name
+        # print method_name
     if method_name:
         return filename, method_name
-        #return '%s: %s' % (filename, method_name)
+        # return '%s: %s' % (filename, method_name)
     return filename, None
 
 
@@ -29,8 +29,8 @@ def main():
     filename = 'N/A'
     for line in fileinput.input():
         filename, method_name = process(line, filename)
-        if method_name:
-            print '%s: %s' % (filename, method_name)
+        # if method_name:
+        print('%s: %s' % (filename, method_name or ''))
 
 
 if __name__ == "__main__":
