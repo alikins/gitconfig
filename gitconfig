@@ -37,6 +37,9 @@
 [push]
    default = tracking
 
+[pull]
+	rebase = false
+
 [branch]
    autosetupmerge = true
 
