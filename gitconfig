@@ -12,9 +12,9 @@
     ui = auto
 
 [merge]
-    #tool = meld
+    # tool = meld
     tool = diffuse
-	conflictstyle = diff3
+    # conflictstyle = diff3
     log = true
     branchdesc = true
 
@@ -24,7 +24,7 @@
     submodulesummary = false
 
 [rerere]
-	enabled = true
+    enabled = true
 
 [diff]
    tool = diffuse
@@ -90,8 +90,8 @@
 #
 # custom python xfuncname from
 # https://github.com/cofi/dotfiles/blob/master/gitconfig
-[diff "python"]
-    xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
+# [diff "python"]
+#    xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
 
 [filter "lfs"]
 	smudge = git-lfs smudge %f
@@ -109,6 +109,11 @@
     cmd = vim \"$MERGED\"
     prompt = false
 
+[mergetool "vscode"]
+    cmd = code --wait $MERGED
+
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
 
 [color "branch"]
   current = yellow reverse
@@ -146,7 +151,7 @@
     tagage = !sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'
 
     # show a list of tags sorted by `sort` version compare (ie, more or less rpmvercmp)
-    tagsort = !sh -c 'git tag -l $1 | sort --version-sort'
+    tagsort = !sh -c 'git tag -n1 -l $1 | sort --version-sort'
 
     # https://github.com/prabirshrestha/ProfilesAndSettings/blob/master/.gitconfig
     # show tags and any tag annotation (tito adds tag annotations for example)
@@ -334,9 +339,6 @@
     # external script now
     # buggyclasses = "!f() { git log -M -C -p  | pcregrep -o  \"@@.*@@\\sclass\\s(.*)\\(.*\\)\"  | cut -f5 -d\'@\' | sort | uniq -c | sort -n;}; f"
 
-    # ignore local changes to a  file
-    ignore = update-index --assume-unchanged
-
     # http://sandofsky.com/blog/git-workflow.html
     # merge code but not history to manually recommit
     # for emergency use only
@@ -419,6 +421,14 @@
     heads = !"git log --color origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
 
     dlog = log devel...HEAD
+
+    # ignore local changes to a  file
+    # https://coderwall.com/p/gjp15g/git-temporarily-ignoring-files
+    ignore = update-index --assume-unchanged
+    unignore = update-index --no-assume-unchanged
+    ignored = !git ls-files -v | grep ^[a-z]
+    # See also 'ls-ignored'
+    # ls-ignored = ls-files --exclude-standard --ignored --others
 
 # local user config, usernames, etc
 [include]
