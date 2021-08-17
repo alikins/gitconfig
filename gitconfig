@@ -7,8 +7,8 @@
     ui = auto
 
 [merge]
-    # tool = meld
-    tool = diffuse
+    tool = meld
+    # tool = diffuse
     # conflictstyle = diff3
     log = true
     branchdesc = true
@@ -22,11 +22,14 @@
     enabled = true
 
 [diff]
-   tool = diffuse
+   # I love you diffuse, but you aren't maintained
+   # tool = diffuse
+   tool = meld
    noprefix = true
    renameLimit = 2500
+   colorMoved = True
    # suppressBlankEmpty = true
-   # mnemonicPrefix = true
+   mnemonicPrefix = true
 
 [commit]
     verbose = true
@@ -44,6 +47,9 @@
    autosetupmerge = true
 
 [status]
+
+[init]
+	defaultBranch = main
 
 # convert po files to a less noisy
 # variant for display in git log -p etc
